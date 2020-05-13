@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package playlist;
+
+import "track.proto";
+
+message Playlist{
+    int32 idPlaylist = 1;
+    string title = 2;
+    string creation = 3;
+    bytes cover = 4;
+    bool isPublic = 5;
+    repeated Track listTracks = 6;
+}
+message CreatePlaylistRequest{
+    string title = 1;
+    string creation = 2;
+    bytes cover = 3;
+    bool isPublic = 4;
+}
+message CreatePlaylistResult{
+    Playlist playlist = 1;
+}
+message UpdatePlaylistRequest{
+    Playlist playlist = 1;
+}
+message OperationResult{
+    int32 codeResult = 1;
+    string message = 2;
+}
+
+message DeletePlatlistRequest{
+    int32 idPlaylist = 1;
+}
+
+message GetPlaylistRequest{
+    int32 idPlaylist = 1;
+}
+
+message GetPlaylistByAccountRequest{
+    int32 idAccount = 1;
+}
+message GetPlaylistByAccountResult{
+    repeated Playlist playlists = 1;
+}
+
+
+
+service PlaylistService{
+    rpc CreatePlaylist(CreatePlaylistRequest) returns (CreatePlaylistResult);
+    rpc UpdatePlaylist(UpdatePlaylistRequest) returns (OperationResult);
+    rpc DeletePlatlist(DeletePlatlistRequest) returns (OperationResult);
+    rpc GetPlaylist(GetPlaylistRequest) returns (Playlist);
+    rpc GetPlaylistByAccount(GetPlaylistByAccountRequest) returns (GetPlaylistByAccountResult);
+}

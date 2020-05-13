@@ -32,11 +32,18 @@ message OperationResult{
 message GetArtistRequest{
     int32 idArtist = 1;
 }
+message GetArtistsByGenderRequest{
+    int32 idGender = 1;
+}
+message GetArtistsByGenderResult{
+    repeated Artist artists = 1;
+}
 
 service ArtistService{
     rpc CreateArtist(CreateArtistRequest) returns (CreateArtistResult);
     rpc UpdateArtist(UpdateArtistRequest) returns (OperationResult);
     rpc DeleteArtist(DeleteArtistRequest) returns (OperationResult);
-    rpc GetArtist(GetArtistRequest) returns (Artist)
+    rpc GetArtist(GetArtistRequest) returns (Artist);
+    rpc GetArtistsByGender(GetArtistsByGenderRequest) returns (GetArtistsByGenderResult);
 
 }
