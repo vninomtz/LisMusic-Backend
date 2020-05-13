@@ -26,18 +26,27 @@ message UpdateTrackRequest{
     int32 reproductions = 3;
     repeated Artist artists = 4;
 }
-message UpdateTrackResult{
+message OperationResult{
     int32 codeResult = 1;
+    string message = 2;
 }
 message DeleteTrackRequest{
     int32 idtrack = 1;
 }
-message DeleteTrackResult{
-    int32 codeResult = 1;
+message AddArtistToTrackRequest{
+    int32 idTrack = 1;
+    Artist artist = 2;
 }
+message RemoveArtistToTrackRequest{
+    int32 idTrack = 1;
+    int32 idArtist = 2;
+}
+
 
 service TrackService{
     rpc CreateTrack(CreateTrackRequest) returns (CreateTrackResult);
-    rpc UpdateTrack(UpdateTrackRequest) returns (UpdateTrackResult);
-    rpc DeleteTrack(DeleteTrackRequest) returns (DeleteTrackResult);
+    rpc UpdateTrack(UpdateTrackRequest) returns (OperationResult);
+    rpc DeleteTrack(DeleteTrackRequest) returns (OperationResult);
+    rpc AddArtistToTrack(AddArtistToTrackRequest) returns (OperationResult);
+    rpc RemoveArtistToTrack(RemoveArtistToTrackRequest) returns (OperationResult);
 }

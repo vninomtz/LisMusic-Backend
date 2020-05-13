@@ -44,6 +44,15 @@ message GetPlaylistByAccountResult{
     repeated Playlist playlists = 1;
 }
 
+message AddTrackToPlaylistRequest{
+    int32 idPlaylist = 1;
+    Track track = 2;
+}
+
+message RemoveTrackToPlaylistRequest{
+    int32 idPlaylist = 1;
+    int32 idTrack = 2;
+}
 
 
 service PlaylistService{
@@ -52,4 +61,6 @@ service PlaylistService{
     rpc DeletePlatlist(DeletePlatlistRequest) returns (OperationResult);
     rpc GetPlaylist(GetPlaylistRequest) returns (Playlist);
     rpc GetPlaylistByAccount(GetPlaylistByAccountRequest) returns (GetPlaylistByAccountResult);
+    rpc AddTrackToPlaylist(AddTrackToPlaylistRequest) returns (OperationResult);
+    rpc RemoveTrackToPlaylist(RemoveTrackToPlaylistRequest) returns (OperationResult);
 }
