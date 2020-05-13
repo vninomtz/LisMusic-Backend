@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package track;
+import "artist.proto";
+
+message Track{
+    int32 idtrack = 1;
+    string title = 2;
+    float duration = 3;
+    int32 reproductions = 4;
+    repeated Artist artists = 5;
+}
+message CreateTrackRequest{
+    string title = 1;
+    float duration = 2;
+    repeated Artist artists = 3;
+}
+
+message CreateTrackResult{
+    Track track = 1;
+}
+
+message UpdateTrackRequest{
+    string title = 1;
+    float duration = 2;
+    int32 reproductions = 3;
+    repeated Artist artists = 4;
+}
+message UpdateTrackResult{
+    int32 codeResult = 1;
+}
+message DeleteTrackRequest{
+    int32 idtrack = 1;
+}
+message DeleteTrackResult{
+    int32 codeResult = 1;
+}
+
+service TrackService{
+    rpc CreateTrack(CreateTrackRequest) returns (CreateTrackResult);
+    rpc UpdateTrack(UpdateTrackRequest) returns (UpdateTrackResult);
+    rpc DeleteTrack(DeleteTrackRequest) returns (DeleteTrackResult);
+}
