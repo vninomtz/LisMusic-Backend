@@ -21,7 +21,11 @@ install_python() {
     python3-all-dev \
     python3-setuptools \
     python3-pip > /dev/null 2>&1
+
+   pip3 install --upgrade pip
+
 }
+
 #Install PostgreSQL
 install_postgresql(){
     #PostgreSQL version
@@ -45,7 +49,12 @@ install_postgresql(){
 }
 #Install Django
 install_django(){
-    python3 -m pip install -y Django==3.0.6
+    python3 -m pip install Django==3.0.6
+}
+
+#Install Flask 
+install_flask(){
+  pip3 install flask
 }
 # Remove unused software
 clean_up() {
@@ -57,6 +66,7 @@ setup() {
     update_box
     set_language
     install_python
+    install_flask
     clean_up 
 }
 
