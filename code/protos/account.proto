@@ -30,8 +30,9 @@ message UpdateAccountRequest{
     string idAccount = 1;
 } 
 
-message UpdateAccountResult{
-    string message = 1;
+message OperationResult{
+    int32 codeResult = 1;
+    string message = 2;
 }
 
 message GetAccountRequest{
@@ -42,13 +43,11 @@ message DeleteAccountRequest{
     string idAccount = 1;
 }
 
-message DeleteAccountResult{
-    string message = 1;
-}
+
 
 service AccountSevice{
     rpc CreateAccount (AccountRequest) returns (AccountResult);
-    rpc UpdateAccount(UpdateAccountRequest) returns (UpdateAccountResult);
-    rpc GetAccount(GetAccountRequest) returns (AccountResult);
-    rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResult);
+    rpc UpdateAccount(UpdateAccountRequest) returns (OperationResult);
+    rpc GetAccount(GetAccountRequest) returns (Account);
+    rpc DeleteAccount(DeleteAccountRequest) returns (OperationResult);
 }

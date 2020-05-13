@@ -1,0 +1,63 @@
+syntax = "proto3";
+package album;
+
+message Album{
+    int32 idAlbum = 1;
+    string title = 2;
+    string type = 3;
+    string recordCompany = 4;
+    string gender = 5;
+    string publication = 6;
+    float duration = 7;
+    float rating = 8;
+    repeated Artist artists = 9;
+    repeated Track tracks = 10;
+}
+
+message CreateAlbumRequest{
+    string title = 1;
+    string type = 2;
+    string recordCompany = 3;
+    string gender = 4;
+    string publication = 5;
+    float duration = 6;
+    repeated Artist artists = 7;
+    repeated Track tracks = 8;
+}
+
+message CreateAlbumResult{
+    Album album = 1;
+}
+
+message UpdateAlbumRequest{
+    int32 idAlbum = 1;
+    string title = 2;
+    string type = 3;
+    string recordCompany = 4;
+    string gender = 5;
+    string publication = 6;
+    float duration = 7;
+    repeated Artist artists = 8;
+    repeated Track tracks = 9;
+}
+
+message DeleteAlbumRequest{
+    int32 idAlbum = 1;
+}
+
+message OperationResult{
+    int32 codeResult = 1;
+    string message = 2;
+}
+
+message GetAlbumRequest{
+    int32 idAlbum = 1;
+}
+
+service AlbumService {
+    rpc CreateAlbum(CreateAlbumRequest) returns (CreateAlbumResult);
+    rpc UpdateAlbum(UpdateAlbumRequest) returns (OperationResult);
+    rpc GetAlbum(GetAlbumRequest) returns (Album);
+    rpc DeleteAlbum(DeleteAlbumRequest) returns (OperationResult);
+
+}
