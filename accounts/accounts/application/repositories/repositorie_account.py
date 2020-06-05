@@ -13,7 +13,3 @@ class AccountRepository(abc.ABC):
     @abc.abstractmethod
     def delete(self, accountId: str):
         pass
-
-    @abc.abstractmethod
-    def get(self):
-        pass

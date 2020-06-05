@@ -4,3 +4,6 @@ class AccountAlreadyExistException(Exception):
 
 class AccountInvalidException(Exception):
     pass
+
+class DataBaseException(Exception):
+    pass

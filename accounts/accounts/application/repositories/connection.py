@@ -21,15 +21,5 @@ class ConnectionSQL:
         self.cursor.close()
         self.connection.close()
 
-
-# Ejemplo de implementación 
-# conx = ConnectionSQL()
-# conx.open()
-# conx.cursor.execute("Select * from MusicGenders ")
-# #connection.commit()
-# rows = conx.cursor.fetchall() 
-# for row in rows:
-#     print(row, end='\n')
-    
-
-# conx.close()
+    def save(self):
+        self.connection.commit()

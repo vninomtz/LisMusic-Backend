@@ -1,8 +1,8 @@
 from uuid import uuid4
 
 class Account:
-    def __init__(self,idAccount,firstName,lastName,email,
-        password,userName,gender,birthday,cover):
+    def __init__(self,idAccount=None,firstName=None,lastName=None,email=None,
+        password=None,userName=None,gender=None,birthday=None,cover=None):
         self.idAccount =idAccount
         self.firstName = firstName
         self.lastName = lastName

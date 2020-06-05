@@ -24,8 +24,3 @@ class CreateAccount:
 
         account = self.repository.save(newAccount)
         return account
-
-    def prueba(self):
-        self.repository.get()
-        return 
-         
