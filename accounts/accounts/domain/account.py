@@ -15,7 +15,7 @@ class Account:
 
     @classmethod
     def create(cls, firstName, lastName, email, password, userName, gender, birthday, cover):
-        newId = uuid4()
+        newId = str(uuid4())
         newAccount = Account(newId,firstName,lastName,email,password,userName,gender,birthday,cover)
         return newAccount
     

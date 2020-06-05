@@ -1,19 +1,35 @@
 import pyodbc
 
-server = 'localhost,1500'
-database = 'LisMusicDB'
-username = 'usrLisMusicDB'
-password = 'usrLisMusicDB_2020'
-connectionString = "DRIVER={ODBC Driver 17 for SQL Server}" + ";SERVER={0};DATABASE={1};UID={2};PWD={3}".format(
-server, database,username,password)
-connection = pyodbc.connect(connectionString)
-query = """INSERT INTO MusicGenders (GenderName, Cover) VALUES (?,?)""", 'Pop', 'url' 
+class ConnectionSQL:
+    def __init__(self):
+        self.connection = None
+        self.cursor = None
+        self.server = 'localhost,1500'
+        self.database = 'LisMusicDB'
+        self.username = 'usrLisMusicDB'
+        self.password = 'usrLisMusicDB_2020'
+        self.connectionString = "DRIVER={ODBC Driver 17 for SQL Server}" + ";SERVER={0};DATABASE={1};UID={2};PWD={3}".format(
+        self.server, self.database,self.username,self.password)
+        
 
-cursor = connection.cursor()
-#cursor.execute("""INSERT INTO MusicGenders (GenderName, Cover) VALUES (?,?)""",'Rock', 'url') 
-cursor.execute("Select * from MusicGenders where GenderName = 'Pop'")
-#connection.commit()
-rows = cursor.fetchone() 
-if rows:
-    print(rows.GenderName, end='\n')
+    def open(self):
+        self.connection = pyodbc.connect(self.connectionString)
+        self.cursor = self.connection.cursor()
+
+
+    def close(self):
+        self.cursor.close()
+        self.connection.close()
+
+
+# Ejemplo de implementación 
+# conx = ConnectionSQL()
+# conx.open()
+# conx.cursor.execute("Select * from MusicGenders ")
+# #connection.commit()
+# rows = conx.cursor.fetchall() 
+# for row in rows:
+#     print(row, end='\n')
     
+
+# conx.close()
