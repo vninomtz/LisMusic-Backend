@@ -1,0 +1,53 @@
+syntax = "proto3";
+package account;
+
+message Account {
+    int32 idAccount = 1;
+    string userName = 2;
+    string firstName = 3;
+    string lastName = 4;
+    string email = 5;
+    string gender = 6;
+    string birthday = 7;
+    bool isContentCreator = 8;
+    string password = 9;
+    bytes userImage = 10;
+}
+
+message AccountRequest{
+    string userName = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string email = 4;
+    string password = 5; 
+}
+
+message AccountResult{
+    Account Account = 1;
+}
+
+message UpdateAccountRequest{
+    string idAccount = 1;
+} 
+
+message OperationResult{
+    int32 codeResult = 1;
+    string message = 2;
+}
+
+message GetAccountRequest{
+    string idAccount = 1;
+}
+
+message DeleteAccountRequest{
+    string idAccount = 1;
+}
+
+
+
+service AccountSevice{
+    rpc CreateAccount (AccountRequest) returns (AccountResult);
+    rpc UpdateAccount(UpdateAccountRequest) returns (OperationResult);
+    rpc GetAccount(GetAccountRequest) returns (Account);
+    rpc DeleteAccount(DeleteAccountRequest) returns (OperationResult);
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package streaming;
+
+enum Quality{
+    LOW = 1;
+    HALF = 2;
+    HIGH = 3;
+    AUTOMATIC = 4;
+}
+
+message StreamingRequest{
+    int32 idTrack = 1;
+    Quality quality = 2;
+}
+
+message StreamingResult{
+    repeated bytes track = 1;
+}
+
+
+
+service StreamingService{
+    rpc StreamingTrack(StreamingRequest) returns (stream StreamingResult);
+}
