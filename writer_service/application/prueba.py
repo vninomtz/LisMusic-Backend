@@ -1,3 +1,6 @@
+import sys
+sys.path.append("../")
+
 from accounts.accounts.application.use_cases import create_account, update_account
 from infraestructure.sqlserver_repository import SqlServerAccountRepository
 import datetime
