@@ -1,4 +1,5 @@
 import pyodbc
+from accounts.accounts.domain.exceptions import DataBaseException
 
 class ConnectionSQL:
     def __init__(self):
@@ -13,7 +14,10 @@ class ConnectionSQL:
         
 
     def open(self):
-        self.connection = pyodbc.connect(self.connectionString)
+        try:
+            self.connection = pyodbc.connect(self.connectionString)
+        except Exception as ex:
+            raise DataBaseException(ex)
         self.cursor = self.connection.cursor()
 
 

@@ -18,6 +18,7 @@ class SqlServerAccountRepository(AccountRepository):
 
         print(self.connection.cursor.rowcount, " Accounts inserted")
         self.connection.save()
+        self.connection.close()
         return account
 
     def update(self, account: Account):
