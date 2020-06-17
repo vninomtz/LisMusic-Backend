@@ -1,5 +1,5 @@
 from accounts.accounts.application.repositories.repositorie_account import AccountRepository
-from accounts.accounts.domain.exceptions import EmptyFieldsException, DataBaseException
+from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException
 from accounts.accounts.domain.account import Account
 from dataclasses import dataclass
 
@@ -14,8 +14,8 @@ class DeleteAccount:
         self.repository = repository
 
     def execute(self, inputAccount: DeleteAccountInputDto):
-        if inputAccount.idAccount is None:
-            raise EmptyFieldsException("Campos vacíos")
+        if not inputAccount.idAccount:
+            raise AccountInvalidException("Campos vacíos")
         
         try:
             result = self.repository.delete(inputAccount.idAccount)

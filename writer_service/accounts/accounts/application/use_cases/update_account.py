@@ -18,21 +18,16 @@ class UpdateAccount:
         self.repository = repository
 
     def execute(self, inputAccount: UpdateAccountInputDto):
-        if inputAccount.idAccount is None:
+        if not inputAccount.idAccount:
             raise AccountInvalidException("Campos faltantes")
-        account = Account()
-        account.idAccount = inputAccount.idAccount
-        account.firstName = inputAccount.firstName
-        account.lastName = inputAccount.lastName
-        account.userName = inputAccount.userName
-        account.birthday = inputAccount.birthday
-        account.gender = inputAccount.gender
-        account.cover = inputAccount.cover
+
+        account = Account(inputAccount.idAccount,inputAccount.firstName,inputAccount.lastName,None, None,inputAccount.userName,
+            None,inputAccount.birthday,inputAccount.cover)
         try:
             result = self.repository.update(account)
             return result
         except DataBaseException:
-            raise DataBaseException("Error al actualizar la cuenta")
+            raise DataBaseException("Error en la base de datos")
         
 
          

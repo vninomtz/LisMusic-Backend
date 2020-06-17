@@ -28,17 +28,16 @@ class SqlServerAccountRepository(AccountRepository):
             SET FirstName = ?
                 ,LastName = ?
                 ,UserName = ?
-                ,Gender = ?
                 ,Birthday = ?
                 ,Cover = ?
             WHERE IdAccount = ?
-        """, account.firstName, account.lastName,account.userName,account.gender, account.birthday, account.cover, account.idAccount)
-        self.connection.save()
-        print(self.connection.cursor.rowcount, " Accounts updated")
-        if self.connection.cursor.rowcount > 0:
+        """, account.firstName, account.lastName,account.userName, account.birthday, account.cover, account.idAccount)
+        
+        try:
+            self.connection.save()
             print(self.connection.cursor.rowcount, " Accounts updated")
             return True
-        else:
+        except DataBaseException as identifier:
             raise DataBaseException("Error en la conexión a la BD")
 
     def delete(self, accountId: str):
