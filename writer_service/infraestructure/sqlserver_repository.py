@@ -1,6 +1,6 @@
 from accounts.accounts.domain.account import Account
 from accounts.accounts.application.repositories.repositorie_account import AccountRepository
-from accounts.accounts.application.repositories.connection import ConnectionSQL
+from infraestructure.connection import ConnectionSQL
 from accounts.accounts.domain.exceptions import DataBaseException
 
 class SqlServerAccountRepository(AccountRepository):
@@ -42,7 +42,16 @@ class SqlServerAccountRepository(AccountRepository):
             raise DataBaseException("Error en la conexión a la BD")
 
     def delete(self, accountId: str):
-        pass
+        self.connection.open()
+        self.connection.cursor.execute("""
+        DELETE FROM Accounts WHERE IdAccount = ?""", accountId)
+        try:
+            self.connection.save()
+            print(self.connection.cursor.rowcount, " Accounts deleted")
+            return True
+        except DataBaseException as ex:
+            raise DataBaseException("Error al actualizar la Base de datos: ", ex)
+        
 
     
 

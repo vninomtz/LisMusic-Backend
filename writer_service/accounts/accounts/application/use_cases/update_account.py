@@ -34,6 +34,5 @@ class UpdateAccount:
         except DataBaseException:
             raise DataBaseException("Error al actualizar la cuenta")
         
-        print("todo bien")
 
          
