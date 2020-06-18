@@ -4,7 +4,7 @@ from accounts.accounts.application.use_cases import create_account, update_accou
 from infraestructure.sqlserver_repository import SqlServerAccountRepository
 import datetime
 from accounts.accounts.domain.account import Account
-from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException
+from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException, AccountNotExistException
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 
@@ -13,23 +13,33 @@ class AccountHandler(Resource):
     def post(self):
         print("Creando cuenta...")
         usecase = create_account.CreateAccount(SqlServerAccountRepository())
-        dtoclass = create_account.CreateAccountInputDto()
-        dtoclass.firstName = request.json["firstName"]
-        dtoclass.lastName = request.json["lastName"]
-        dtoclass.email = request.json["email"]
-        dtoclass.password = request.json["password"]
-        dtoclass.userName = request.json["userName"]
-        dtoclass.gender = request.json["gender"]
-        dtoclass.birthday = datetime.datetime.strptime((request.json["birthday"]), '%Y-%m-%d')
-        dtoclass.cover = request.json["cover"]
+        dtoclass = create_account.CreateAccountInputDto(
+            None,
+            request.json["firstName"],
+            request.json["lastName"],
+            request.json["email"],
+            request.json["password"],
+            request.json["userName"],
+            request.json["gender"],
+            datetime.datetime.strptime((request.json["birthday"]), '%Y-%m-%d'),
+            request.json["cover"]
+        )
         try:
             result = usecase.execute(dtoclass)
             if result:
-                return result.idAccount
-        except (AccountInvalidException, DataBaseException) as ex:
-            print(ex)
-
-        return "Error"
+                response = jsonify(result.__dict__)
+                response.status_code = 200
+                return response
+        except AccountInvalidException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 404
+            return response
+        except DataBaseException:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 500
+            return response
 
     def put(self):
         print("Actualizando cuenta...")
@@ -48,8 +58,25 @@ class AccountHandler(Resource):
         )
         try:
             result = usecase.execute(dtoclass)
-        except (AccountInvalidException, DataBaseException) as ex:
-            print("Error al actualizar la cuenta:[{0}] ".format(ex))
+            if result:
+                response = jsonify({'message': 'Account successfully updated'})
+                response.status_code = 204
+                return response
+        except AccountInvalidException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 400
+            return response
+        except AccountNotExistException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 404
+            return response
+        except DataBaseException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 500
+            return response
 
     def delete(self):
         print("Eliminando cuenta...")
@@ -57,6 +84,22 @@ class AccountHandler(Resource):
         dtoclass = delete_account.DeleteAccountInputDto(request.json["idAccount"])
         try:
             result = usecase.execute(dtoclass)
-            return result
-        except (AccountInvalidException, DataBaseException) as ex:
-            print("{0} ".format(ex))
+            if result:
+                response = jsonify({'message': 'Account successfully deleted'})
+                response.status_code = 204
+                return response
+        except AccountInvalidException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 400
+            return response
+        except AccountNotExistException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 404
+            return response
+        except DataBaseException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 500
+            return response

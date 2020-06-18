@@ -20,6 +20,8 @@ class DeleteAccount:
         try:
             result = self.repository.delete(inputAccount.idAccount)
             return result
-        except (DataBaseException, AccountNotExistException) as ex:
+        except AccountNotExistException as ex:
+            raise AccountNotExistException(ex)
+        except DataBaseException as ex:
             raise DataBaseException(ex)
         
