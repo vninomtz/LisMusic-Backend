@@ -2,7 +2,7 @@ from accounts.accounts.application.repositories.repositorie_account import Accou
 from accounts.accounts.domain.account import Account
 from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException
 from dataclasses import dataclass
-
+import datetime
 @dataclass
 class UpdateAccountInputDto:
     idAccount: str = None
@@ -21,8 +21,9 @@ class UpdateAccount:
         if not inputAccount.idAccount:
             raise AccountInvalidException("Campos faltantes")
 
+        updated = datetime.datetime.utcnow()
         account = Account(inputAccount.idAccount,inputAccount.firstName,inputAccount.lastName,None, None,inputAccount.userName,
-            None,inputAccount.birthday,inputAccount.cover)
+            None,inputAccount.birthday,inputAccount.cover,None,updated)
         try:
             result = self.repository.update(account)
             return result

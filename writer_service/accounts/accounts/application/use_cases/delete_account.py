@@ -1,5 +1,5 @@
 from accounts.accounts.application.repositories.repositorie_account import AccountRepository
-from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException
+from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException, AccountNotExistException
 from accounts.accounts.domain.account import Account
 from dataclasses import dataclass
 
@@ -20,6 +20,6 @@ class DeleteAccount:
         try:
             result = self.repository.delete(inputAccount.idAccount)
             return result
-        except DataBaseException:
-            raise DataBaseException("Error al eliminar la cuenta")
+        except (DataBaseException, AccountNotExistException) as ex:
+            raise DataBaseException(ex)
         

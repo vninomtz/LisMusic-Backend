@@ -34,13 +34,16 @@ class AccountHandler(Resource):
     def put(self):
         print("Actualizando cuenta...")
         usecase = update_account.UpdateAccount(SqlServerAccountRepository())
+        dateAccount = None
+        if request.json["birthday"]:
+            dateAccount = datetime.datetime.strptime((request.json["birthday"]), '%Y-%m-%d')
         dtoclass = update_account.UpdateAccountInputDto(
             request.json["idAccount"],
             request.json["firstName"],
             request.json["lastName"],
             request.json["userName"],
             request.json["gender"],
-            datetime.datetime.strptime((request.json["birthday"]), '%Y-%m-%d'),
+            dateAccount,
             request.json["cover"]
         )
         try:
@@ -56,4 +59,4 @@ class AccountHandler(Resource):
             result = usecase.execute(dtoclass)
             return result
         except (AccountInvalidException, DataBaseException) as ex:
-            print("Error al actualizar la cuenta:[{0}] ".format(ex))
+            print("{0} ".format(ex))

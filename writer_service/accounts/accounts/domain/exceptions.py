@@ -1,6 +1,9 @@
 class AccountAlreadyExistException(Exception):
     pass
 
+class AccountNotExistException(Exception):
+    pass
+
 class AccountInvalidException(Exception):
     pass
 
