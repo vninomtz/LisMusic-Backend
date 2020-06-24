@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../")
+sys.path.append("../../")
 
 from application.handlers.account_handler import AccountHandler
 from application.handlers.login_handler import LoginHandler
@@ -9,7 +9,7 @@ from flask_restful import Resource, Api
 #import jwt
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'thebiggestsecretkey'
+#app.config['SECRET_KEY'] = 'thebiggestsecretkey'
 api = Api(app)
 
 

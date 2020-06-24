@@ -86,7 +86,7 @@ class AccountHandler(Resource):
             response.status_code = 500
             return response
 
-    @jwt_required
+
     def delete(self):
         print("Eliminando cuenta...")
         usecase = delete_account.DeleteAccount(SqlServerAccountRepository())

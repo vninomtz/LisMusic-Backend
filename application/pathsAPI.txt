@@ -1,0 +1,36 @@
+
+
+##Todos 
+#api.add_resource(AccountHandler, '/account') # /account/<email> or <id>
+#localhost:1500/login
+
+
+###creador contenido access token validar creador contenido
+    #localhost:1500/account/artist/<id>           --post,put,delte, get
+    #localhost:1500/account/artist/albums/<id>            -- post,put,delete    getbyid, getall
+    #localhost:1500/account/artist/albums/track/<id>      --lista post,put,delete  (tal vez lista)
+
+
+###consumidor de contenido access token global
+    #Library
+    localhost:1500/account/history/track/<id> --post, delete, getall(tracks) 
+    localhost:1500/account/library/playlist/<id>       --post,put,delete, getll(playlist)
+    localhost:1500/account/library/playlist/track/<id> --post, delete, getall(tracks) 
+    localhost:1500/account/library/artist/<id>       --post,put,delete, getll(playlist)  -> obtenerlistaArtistasEnPlaylistMegusta
+    localhost:1500/account/library/albums/<id>       --post,put,delete, getll(playlist)  -> obtenerlistaAlbumsEnPlaylistMegusta
+
+    #Search
+    -buscar
+    localhost:1500/track --getall -->obtenerCancionesPorCoincidencia
+    -Generos
+    
+
+
+    #Home
+    -Radio
+    -Canciones recientes
+    -albums recientes
+
+
+
+
