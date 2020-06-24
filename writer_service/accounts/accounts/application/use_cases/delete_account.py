@@ -16,6 +16,9 @@ class DeleteAccount:
     def execute(self, inputAccount: DeleteAccountInputDto):
         if not inputAccount.idAccount:
             raise AccountInvalidException("Campos vacíos")
+
+        if not self.repository.exist_account(inputAccount.idAccount):
+            raise AccountNotExistException("Account not exist")
         
         try:
             result = self.repository.delete(inputAccount.idAccount)

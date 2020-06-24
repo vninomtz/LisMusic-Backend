@@ -1,6 +1,12 @@
 class AccountAlreadyExistException(Exception):
     pass
 
+class EmailAlreadyExistException(Exception):
+    pass
+
+class UserNameAlreadyExistException(Exception):
+    pass
+
 class AccountNotExistException(Exception):
     pass
 

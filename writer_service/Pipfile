@@ -9,6 +9,9 @@ pyodbc = "*"
 flask = "*"
 flask-jsonpify = "*"
 flask-restful = "*"
+jwt = "*"
+pyjwt = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 

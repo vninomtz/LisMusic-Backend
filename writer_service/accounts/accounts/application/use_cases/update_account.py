@@ -1,6 +1,6 @@
 from accounts.accounts.application.repositories.repositorie_account import AccountRepository
 from accounts.accounts.domain.account import Account
-from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException
+from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException, AccountNotExistException
 from dataclasses import dataclass
 import datetime
 @dataclass
@@ -21,9 +21,12 @@ class UpdateAccount:
         if not inputAccount.idAccount:
             raise AccountInvalidException("Campos faltantes")
 
+        if not self.repository.exist_account(inputAccount.idAccount):
+            raise AccountNotExistException("Account not exist")
+
         updated = datetime.datetime.utcnow()
         account = Account(inputAccount.idAccount,inputAccount.firstName,inputAccount.lastName,None, None,inputAccount.userName,
-            None,inputAccount.birthday,inputAccount.cover,None,updated)
+            None,inputAccount.birthday,inputAccount.cover,None,updated,None,None)
         try:
             result = self.repository.update(account)
             return result

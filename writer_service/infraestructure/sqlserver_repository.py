@@ -1,7 +1,7 @@
 from accounts.accounts.domain.account import Account
 from accounts.accounts.application.repositories.repositorie_account import AccountRepository
 from infraestructure.connection import ConnectionSQL
-from accounts.accounts.domain.exceptions import DataBaseException, AccountNotExistException
+from accounts.accounts.domain.exceptions import DataBaseException, AccountNotExistException, EmailAlreadyExistException, UserNameAlreadyExistException
 
 class SqlServerAccountRepository(AccountRepository):
     def __init__(self):
@@ -9,17 +9,45 @@ class SqlServerAccountRepository(AccountRepository):
 
     def save(self, account: Account):
         self.connection.open()
-        self.connection.cursor.execute("""
-        INSERT INTO Accounts
-           (IdAccount,FirstName,LastName,Email,Password,UserName,Gender,Birthday,Cover,CreatedDate)
-            VALUES (?,?,?,?,?,?,?,?,?,?)
-        """, account.idAccount,account.firstName,account.lastName,account.email,account.password,
-        account.userName,account.gender,account.birthday,account.cover,account.createdDate)
+        sql = """
+                DECLARE	@return_value int,
+                @salida nvarchar(1000),
+                @estado int
 
-        print(self.connection.cursor.rowcount, " Accounts inserted")
-        self.connection.save()
-        self.connection.close()
-        return account
+        EXEC	@return_value = [dbo].[SPI_CreateAccount]
+                @IdAccount = ?,
+                @firstName = ?,
+                @lastName = ?,
+                @email = ?,
+                @password = ?,
+                @userName = ?,
+                @gender = ?,
+                @birthday = ?,
+                @cover = ?,
+                @created = ?,
+                @updated = ?,
+                @contentCreator = ?,
+                @typeRegister = ?,
+                @salida = @salida OUTPUT,
+                @estado = @estado OUTPUT
+
+        SELECT	@salida as N'@salida',
+                @estado as N'@estado'
+        """
+        params = (account.idAccount,account.firstName,account.lastName,account.email,account.password,
+                    account.userName,account.gender,account.birthday,account.cover,account.createdDate,
+                    None,account.contentCreator, account.typeRegister)
+
+        self.connection.cursor.execute(sql,params)
+
+        try:
+            self.connection.save()
+            print(self.connection.cursor.rowcount, " Account created")
+            self.connection.close()
+            return True
+        except DataBaseException as ex:
+            raise DataBaseException("Error en la conexión a la BD")
+
 
     def update(self, account: Account):
         self.connection.open()
@@ -53,11 +81,8 @@ class SqlServerAccountRepository(AccountRepository):
 
 
     def delete(self, accountId: str):
-        if not self.exist_account(accountId):
-            raise AccountNotExistException("Account not exist")
-
         self.connection.open()
-        sql = """\
+        sql = """
             DECLARE	@return_value int,
                     @estado int,
                     @salida nvarchar(1000)
@@ -98,6 +123,60 @@ class SqlServerAccountRepository(AccountRepository):
                     @salida as N'@salida'
         """
         self.connection.cursor.execute(sql, idAccount)
+        row = self.connection.cursor.fetchval()
+        result = False
+        if row == -1:
+            result = False
+        else:
+            result = True
+        
+        self.connection.close()
+        return result
+
+    
+    def exist_email(self, email: str):
+        self.connection.open()
+        sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC	@return_value = [dbo].[SPS_EmailExist]
+                    @email = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+        """
+        self.connection.cursor.execute(sql, email)
+        row = self.connection.cursor.fetchval()
+        result = False
+        if row == -1:
+            result = False
+        else:
+            result = True
+        
+        self.connection.close()
+        return result
+
+
+    def exist_userName(self, userName: str):
+        self.connection.open()
+        sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC	@return_value = [dbo].[SPS_UserNameExist]
+                    @userName = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+        """
+        self.connection.cursor.execute(sql, userName)
         row = self.connection.cursor.fetchval()
         result = False
         if row == -1:

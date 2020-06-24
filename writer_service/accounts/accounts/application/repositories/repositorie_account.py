@@ -13,3 +13,15 @@ class AccountRepository(abc.ABC):
     @abc.abstractmethod
     def delete(self, accountId: str):
         pass
+
+    @abc.abstractmethod
+    def exist_account(self, accountId: str):
+        pass
+
+    @abc.abstractmethod
+    def exist_email(self, email: str):
+        pass
+
+    @abc.abstractmethod
+    def exist_userName(self, userName: str):
+        pass

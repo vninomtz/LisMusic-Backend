@@ -5,8 +5,10 @@ from infraestructure.sqlserver_repository import SqlServerAccountRepository
 import datetime
 from accounts.accounts.domain.account import Account
 from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException, AccountNotExistException
+from accounts.accounts.domain.exceptions import EmailAlreadyExistException, UserNameAlreadyExistException
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
+from flask_jwt_extended import JWTManager, jwt_required
 
 
 class AccountHandler(Resource):
@@ -22,18 +24,24 @@ class AccountHandler(Resource):
             request.json["userName"],
             request.json["gender"],
             datetime.datetime.strptime((request.json["birthday"]), '%Y-%m-%d'),
-            request.json["cover"]
+            request.json["cover"],
+            request.json["typeRegister"]
         )
         try:
             result = usecase.execute(dtoclass)
             if result:
-                response = jsonify(result.__dict__)
+                response = jsonify(result.to_json())
                 response.status_code = 200
                 return response
-        except AccountInvalidException as ex:
+        except EmailAlreadyExistException as ex:
             error = str(ex)
             response = jsonify({'error': error})
-            response.status_code = 404
+            response.status_code = 400
+            return response
+        except UserNameAlreadyExistException as ex:
+            error = str(ex)
+            response = jsonify({'error': error})
+            response.status_code = 400
             return response
         except DataBaseException:
             error = str(ex)
@@ -78,6 +86,7 @@ class AccountHandler(Resource):
             response.status_code = 500
             return response
 
+    @jwt_required
     def delete(self):
         print("Eliminando cuenta...")
         usecase = delete_account.DeleteAccount(SqlServerAccountRepository())
