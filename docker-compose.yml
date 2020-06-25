@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+    writer:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        network_mode: host
+        expose:
+            - "5000"
+        ports:
+            - "0.0.0.0:5000:500"
+        volumes:
+            - ./lisMusic:/lisMusic
+        stdin_open: true
+        tty: true
