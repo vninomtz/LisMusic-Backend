@@ -3,14 +3,12 @@ from albums.albums.domain.album import Album
 from tracks.tracks.domain.track import Track
 from tracks.tracks.domain.exceptions import TrackInvalidException, DataBaseException
 
-
 @dataclass
 class CreateTrackInputDto:
     title:str = None
     duration:float = None
     fileTrack:str = None
     album: Album = None
-
 class CreateTrack:
     def __init__(self, repository: TrackRepository):
         self.repository: TrackRepository = repository

@@ -18,3 +18,8 @@ class ArtistRepository(abc.ABC):
     def exist_artist(self, idAritst: str):
         pass 
 
+    @abc.abstractmethod
+    def exist_artist(self, idArtist: str):
+        pass
+
+    

@@ -2,9 +2,6 @@ from artists.artists.domain.artist import Artist
 from artists.artists.application.repositories.repository_artist import ArtistRepository
 from infraestructure.connection import ConnectionSQL
 from artists.artists.domain.exceptions import DataBaseException, ArtistNotExistsException
-
-
-
 class SqlServerArtistRepository(ArtistRepository):
     def __init__(self):
         self.connection = ConnectionSQL()
