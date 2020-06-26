@@ -21,8 +21,17 @@ class Track:
         newTrack = Track(str(uuid4()),title,duration,INITIAL_REPRODUCTIONS,fileTrack,False)
         return newTrack
 
-    
-    
     def addTrack_to_album(self, album:Album):
         self.album : Album = album
         album.addTrack(self)
+
+    def to_json(self):
+        track_to_json = {
+            "idTrack": self.idTrack,
+            "title": self.title,
+            "duration": self.duration,
+            "reproductions": self.reproductions,
+            "avaible": self.avaible,
+            "idAlbum": self.album.idAlbum
+        }
+        return track_to_json
