@@ -1,0 +1,2 @@
+class TrackInvalidException(Exception):
+    pass
