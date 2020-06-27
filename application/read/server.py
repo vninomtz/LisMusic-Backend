@@ -1,6 +1,6 @@
 import sys
 sys.path.append("")
-from application.read.handlers.PlaylistHandler import PlaylistAccountHandler
+from application.read.handlers.playlist_handler import PlaylistAccountHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 app = Flask(__name__)

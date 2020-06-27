@@ -1,9 +1,6 @@
 from playlists.playlists.application.repository.repository_playlist import PlaylistRepository
 from playlists.playlists.domain.playlist import Playlist
 from playlists.playlists.domain.exceptions import EmptyFieldsException, DataBaseException
-from accounts.accounts.application.use_cases.exists_account import ExistAccount
-from accounts.accounts.domain.exceptions import AccountNotExistException
-from infraestructure.sqlserver_repository import SqlServerAccountRepository
 import json
 
 class GetPlaylistForAccount:
@@ -14,17 +11,9 @@ class GetPlaylistForAccount:
         if not idAccount:
             raise EmptyFieldsException("Missing fields")
 
-        usecase = ExistAccount(SqlServerAccountRepository())
-        
-        if not usecase.execute(idAccount):
-            raise AccountNotExistException("Account not exist")
-
         try:
             listPlaylist = self.repository.get_playlist_of_account(idAccount)
-            if listPlaylist != []:
-                return listPlaylist
-            else:
-                return ""
+            return listPlaylist
         except DataBaseException as ex:
             raise DataBaseException(ex)
 
