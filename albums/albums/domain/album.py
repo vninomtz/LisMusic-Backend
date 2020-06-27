@@ -1,35 +1,36 @@
-from tracks.tracks.domain.track import Track
+
 from albums.albums.domain.exceptions import AlbumInvalidException, AlbumTypeInvalidException
-from albums.albums.domain.album_types import AlbumTypes
 import datetime
 from uuid import uuid4
-
-
 class Album:
-    def __init__(self):
-        self.idAlbum: str
-        self.title: str
-        self.cover: str
-        self.publication: datetime.date
-        self.recordCompany: str
-        self.idMusicGender: int
-        self.idAlbumType: int
-        self.tracks: Track = []
+    def __init__(self,idAlbum=None,title=None,cover=None,publication=None,recordCompany=None,
+                idMusicGender=None,idAlbumType=None, idArtist=None):
+        self.idAlbum = idAlbum
+        self.title = title
+        self.cover = cover
+        self.publication = publication
+        self.recordCompany = recordCompany
+        self.idMusicGender = idMusicGender
+        self.idAlbumType = idAlbumType
+        self.idArtist = idArtist
 
     @classmethod    
-    def create(cls, title,cover,publication,recordCompany,musicGender,albumType):
-        if not title or not recordCompany or not albumType:
-            raise AlbumInvalidException("Missing fields")
+    def create(cls, title,cover,publication,recordCompany,idMusicGender,idAlbumType, idArtist):
         if not cover:
             cover = "defaultAlbum.jpg"
-        try:
-            idAlbumType = AlbumTypes[albumType]
-        except Exception:
-            raise AlbumTypeInvalidException("Incorrect album type")
-        newAlbum = Album(str(uuid4()), title,cover,publication, recordCompany,musicGender, idAlbumType.value)
+  
+        new_album = Album(str(uuid4()), title,cover,publication, recordCompany,idMusicGender,idAlbumType,idArtist)
+        return new_album
 
-        return newAlbum
-
-
-    def addTrack(self, track: Track):
-        self.tracks.append(track)
+    def to_json(self):
+        album_to_json = {
+        "idAlbum": self.idAlbum,
+        "title": self.title,
+        "cover": self.cover,
+        "publication": self.publication,
+        "recordCompany": self.recordCompany,
+        "idMusicGender": self.idMusicGender,
+        "idAlbumType": self.idAlbumType,
+        "idArtist": self.idArtist,
+    }
+        return album_to_json
