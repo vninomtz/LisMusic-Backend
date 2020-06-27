@@ -18,6 +18,20 @@
     localhost:1500/account/library/playlist/track/<id> --post, delete, getall(tracks) 
     localhost:1500/account/library/artist/<id>       --post,put,delete, getll(playlist)  -> obtenerlistaArtistasEnPlaylistMegusta
     localhost:1500/account/library/albums/<id>       --post,put,delete, getll(playlist)  -> obtenerlistaAlbumsEnPlaylistMegusta
+    
+    Module Library
+        localhost:1500/account/<idAccount>/playlist   get idPlaylist  -> AccountPlaylist get
+            localhost:1500/playlist/<idPlaylist>/tracks     
+
+        localhost:1500/account/<idAccount>/artist       get
+            localhost:1500/artist/<idArtist>/Albums
+                localhost:1500/Album/<idAlbum>/tracks
+                
+        localhost:1500/account/<idAccount>/albums       get
+            localhost:1500/Album/<idAlbum>/tracks
+
+
+
 
     #Search
     -buscar
@@ -28,7 +42,9 @@
 
     #Home
     -Radio
-    -Canciones recientes
+        localhost:1500/Gendes/<idGender>/tracks
+    -Canciones recientes 
+
     -albums recientes
 
 
