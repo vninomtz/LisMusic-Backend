@@ -18,9 +18,8 @@ class DeleteArtist:
         if not inputArtist.idArtist:
             raise ArtistInvalidException("Empty fields")
 
-        usecase_exists_artist = exists_artist.ExistsArtist(self.repository)
-        dtoclass = exists_artist.ExistsArtistInputDto(inputArtist.idArtist)
-        usecase_exists_artist.execute(dtoclass)
+        if not self.repository.exist_artist(inputArtist.idArtist):
+            raise ArtistNotExistsException("Artist not exists")
 
         try:
             result = self.repository.delete(inputArtist.idArtist)

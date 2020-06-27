@@ -3,7 +3,9 @@ from albums.albums.application.repositories.repository_album import AlbumReposit
 from infraestructure.connection import ConnectionSQL
 from albums.albums.domain.exceptions import DataBaseException, AlbumNotExistsException
 
-
+from flask import jsonify
+import json
+from tracks.tracks.domain.track import Track
 
 class SqlServerAlbumRepository(AlbumRepository):
     def __init__(self):
@@ -98,4 +100,82 @@ class SqlServerAlbumRepository(AlbumRepository):
         self.connection.close()
         return result
 
+    def exists_album(self, idAlbum:str):
+        self.connection.open()
+        sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC	@return_value = [dbo].[SPS_AlbumExists]
+                    @IdAlbum = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+        """
+        self.connection.cursor.execute(sql, idAlbum)
+        row = self.connection.cursor.fetchval()
+        result = False
+        if row == -1:
+            result = False
+        else:
+            result = True
+            
+        self.connection.close()
+        return result
+
+    def get_albums_of_artist(self, idArtist:str):
+        self.connection.open()
+        sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC	@return_value = [dbo].[SPS_GetAlbumsOfArtist]
+                    @IdArtist = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+        """
+        self.connection.cursor.execute(sql, idArtist)
+        rows = self.connection.cursor.fetchall()
+        list_albums = []
+        for row in rows:
+            album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication.strftime('%Y-%m-%d'), row.RecordCompany,
+                            row.IdMusicGender, row.IdAlbumType, row.IdArtist)
+            list_albums.append(album)
+
+        return list_albums
+
+    def get_tracks_of_album(self, idAlbum:str):
+            self.connection.open()
+            sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC    @return_value = [dbo].[SPS_GetTracksOfAlbum]
+                    @idAlbum = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+            """
+
+            self.connection.cursor.execute(sql, idAlbum)
+
+            list_tracks = []
+            rows = self.connection.cursor.fetchall()
+            for row in rows:
+                print(row)
+                track = Track(row.IdTrack,row.Title,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
+                list_tracks.append(track)
+                
+            
+            return list_tracks     
 
