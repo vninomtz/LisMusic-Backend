@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../../")
-from albums.albums.application.use_cases import create_album, update_album, delete_album, get_albums_by_id_artist
+from albums.albums.application.use_cases import create_album, update_album, delete_album, get_albums_of_artist
 from infraestructure.sqlserver_repository_album import SqlServerAlbumRepository
 import datetime
 from albums.albums.domain.album import Album
@@ -9,11 +9,12 @@ from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from artists.artists.domain.exceptions import ArtistInvalidException, ArtistNotExistsException
 from infraestructure.sqlserver_repository_artist import SqlServerArtistRepository
+from artists.artists.application.use_cases import exists_artist
 
 class AlbumHandler(Resource):
     def post(self):
         print("Creating album...")
-        usecase = create_album.CreateAlbum(SqlServerAlbumRepository(),SqlServerArtistRepository())
+        usecase = create_album.CreateAlbum(SqlServerAlbumRepository())
         dtoclass = create_album.CreateAlbumInputDto(
             request.json["title"],
             request.json["cover"],
@@ -26,6 +27,10 @@ class AlbumHandler(Resource):
         )
        
         try:
+            usecase_exists_artist = exists_artist.ExistsArtist(SqlServerArtistRepository())
+            idartist = exists_artist.ExistsArtistInputDto(dtoclass.idArtist)
+            usecase_exists_artist.execute(idartist)
+
             result = usecase.execute(dtoclass)
             if result:
                 response = jsonify(result.to_json())
@@ -61,20 +66,7 @@ class AlbumHandler(Resource):
             response = jsonify({'error': error})
             response.status_code = 400
             return response
-
-class AlbumsOfArtistHandler(Resource):
-    def get(self,idArtist):
-        usecase = get_albums_by_id_artist.GetAlbumsByIdArtist(SqlServerAlbumRepository(),SqlServerArtistRepository())
-        dtoclass = get_albums_by_id_artist.GetAlbumsByIdArtistInputDto(idArtist)
-        try:
-            result = usecase.execute(dtoclass)
-            print(result)
-            return jsonify(result.replace("\'", ' '))
-        except ArtistNotExistsException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 400
-            return response                       
+                 
 
 
 

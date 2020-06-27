@@ -7,21 +7,16 @@ from dataclasses import dataclass
 import json
 
 @dataclass
-class GetAlbumsByIdArtistInputDto:
+class GetAlbumsOfArtistInputDto:
     idArtist: str = None
 
-class GetAlbumsByIdArtist:
-    def __init__(self, album_repository: AlbumRepository, artist_repository: ArtistRepository):
+class GetAlbumsOfArtist:
+    def __init__(self, album_repository: AlbumRepository):
         self.album_repository = album_repository
-        self.artist_repository = artist_repository
-
-    def execute(self, inputIdArtist: GetAlbumsByIdArtistInputDto):
-        usecase_exists_artist = exists_artist.ExistsArtist(self.artist_repository)
-        dtoclass = exists_artist.ExistsArtistInputDto(inputIdArtist.idArtist)
-        usecase_exists_artist.execute(dtoclass)
-        
+       
+    def execute(self, inputIdArtist: GetAlbumsOfArtistInputDto):
         try:
-            list_albums = self.album_repository.get_albums_by_id_artist(inputIdArtist.idArtist)
+            list_albums = self.album_repository.get_albums_of_artist(inputIdArtist.idArtist)
             return list_albums
         except DataBaseException as ex:
             raise DataBaseException(ex)

@@ -15,6 +15,8 @@ class TrackRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def exist_track(self, idTrack: str):
+    def exists_track(self, idTrack: str):
         pass
+
+
 

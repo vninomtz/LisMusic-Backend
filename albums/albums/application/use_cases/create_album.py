@@ -1,5 +1,4 @@
 from albums.albums.application.repositories.repository_album import AlbumRepository
-from artists.artists.application.repositories.repository_artist import ArtistRepository
 from albums.albums.domain.exceptions import AlbumGenderInvalidException, AlbumInvalidException, AlbumTypeInvalidException, DataBaseException, AlbumTracksInvalidException
 from dataclasses import dataclass
 from albums.albums.domain.album import Album
@@ -19,9 +18,9 @@ class CreateAlbumInputDto:
     tracks: str = None
 
 class CreateAlbum:
-    def __init__(self, album_repository: AlbumRepository, artist_repository: ArtistRepository):
+    def __init__(self, album_repository: AlbumRepository):
         self.album_repository = album_repository
-        self.artist_repository = artist_repository
+
 
     def execute(self, inputAlbum: CreateAlbumInputDto):
         print(inputAlbum.idMusicGender)
@@ -34,10 +33,6 @@ class CreateAlbum:
 
         if not self.album_repository.exists_album_type(inputAlbum.idAlbumType):
             raise AlbumTypeInvalidException("Album type not exists")
-
-        usecase_exists_artist = exists_artist.ExistsArtist(self.artist_repository)
-        dtoclass = exists_artist.ExistsArtistInputDto(inputAlbum.idArtist)
-        usecase_exists_artist.execute(dtoclass)
 
         if not inputAlbum.tracks:
             raise AlbumTracksInvalidException("Album tracks not found")

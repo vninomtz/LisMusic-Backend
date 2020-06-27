@@ -30,8 +30,8 @@ class Track:
             "idTrack": self.idTrack,
             "title": self.title,
             "duration": self.duration,
-            "reproductions": self.reproductions,
-            "avaible": self.avaible,
-            "idAlbum": self.album.idAlbum
+            "reproducitons": self.reproductions,
+            "fileTrack": self.fileTrack,
+            "avaible": self.avaible
         }
-        return track_to_json
+        return track_to_json;

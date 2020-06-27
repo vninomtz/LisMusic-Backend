@@ -5,6 +5,7 @@ from albums.albums.domain.exceptions import DataBaseException, AlbumNotExistsExc
 
 from flask import jsonify
 import json
+from tracks.tracks.domain.track import Track
 
 class SqlServerAlbumRepository(AlbumRepository):
     def __init__(self):
@@ -125,7 +126,7 @@ class SqlServerAlbumRepository(AlbumRepository):
         self.connection.close()
         return result
 
-    def get_albums_by_id_artist(self, idArtist:str):
+    def get_albums_of_artist(self, idArtist:str):
         self.connection.open()
         sql = """\
             DECLARE	@return_value int,
@@ -150,4 +151,31 @@ class SqlServerAlbumRepository(AlbumRepository):
 
         return list_albums
 
+    def get_tracks_of_album(self, idAlbum:str):
+            self.connection.open()
+            sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC    @return_value = [dbo].[SPS_GetTracksOfAlbum]
+                    @idAlbum = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+            """
+
+            self.connection.cursor.execute(sql, idAlbum)
+
+            list_tracks = []
+            rows = self.connection.cursor.fetchall()
+            for row in rows:
+                print(row)
+                track = Track(row.IdTrack,row.Title,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
+                list_tracks.append(track)
+                
+            
+            return list_tracks     
 

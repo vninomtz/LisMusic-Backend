@@ -16,7 +16,7 @@ class ExistsAlbum:
             raise AlbumInvalidException("Empty fields")
         
         try:
-            if not self.repository.exist_album(inputAlbum.idAlbum):
+            if not self.repository.exists_album(inputAlbum.idAlbum):
                 raise AlbumNotExistsException("Album not exists")
         except DataBaseException as ex:
             raise DataBaseException(ex)

@@ -20,7 +20,11 @@ class AlbumRepository(abc.ABC):
         pass  
  
     @abc.abstractmethod
-    def get_albums_by_id_artist(self, idArtist: str):
+    def get_albums_of_artist(self, idArtist: str):
+        pass
+
+    @abc.abstractmethod
+    def get_tracks_of_album(self, idAlbum: str):
         pass
 
 """     @abc.abstractmethod

@@ -47,6 +47,30 @@ class SqlServerTrackRepository(TrackRepository):
     def delete(self, idTrack: str):
         pass
 
-    def exist_track(self, idTrack: str):
-        pass
+    def exists_track(self, idTrack: str):
+        self.connection.open()
+        sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
 
+            EXEC	@return_value = [dbo].[SPS_TrackExists]
+                    @IdTrack = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+        """
+        self.connection.cursor.execute(sql, idTrack)
+        row = self.connection.cursor.fetchval()
+        result = False
+        if row == -1:
+            result = False
+        else:
+            result = True
+            
+        self.connection.close()
+        return result  
+
+   
