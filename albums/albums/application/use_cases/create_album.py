@@ -1,6 +1,6 @@
 from albums.albums.application.repositories.repository_album import AlbumRepository
+from artists.artists.application.repositories.repository_artist import ArtistRepository
 from albums.albums.domain.exceptions import AlbumGenderInvalidException, AlbumInvalidException, AlbumTypeInvalidException, DataBaseException, AlbumTracksInvalidException
-from infraestructure.sqlserver_repository_artist import SqlServerArtistRepository
 from dataclasses import dataclass
 from albums.albums.domain.album import Album
 import datetime
@@ -19,8 +19,9 @@ class CreateAlbumInputDto:
     tracks: str = None
 
 class CreateAlbum:
-    def __init__(self, repository: AlbumRepository):
-        self.repository = repository
+    def __init__(self, album_repository: AlbumRepository, artist_repository: ArtistRepository):
+        self.album_repository = album_repository
+        self.artist_repository = artist_repository
 
     def execute(self, inputAlbum: CreateAlbumInputDto):
         print(inputAlbum.idMusicGender)
@@ -28,13 +29,13 @@ class CreateAlbum:
         if not inputAlbum.title or not inputAlbum.recordCompany or not inputAlbum.idAlbumType or not inputAlbum.idAlbumType or not inputAlbum.idArtist:
             raise AlbumInvalidException("Empty fields")
 
-        if not self.repository.exists_album_gender(inputAlbum.idMusicGender):
+        if not self.album_repository.exists_album_gender(inputAlbum.idMusicGender):
             raise AlbumGenderInvalidException("Album gender not exists")
 
-        if not self.repository.exists_album_type(inputAlbum.idAlbumType):
+        if not self.album_repository.exists_album_type(inputAlbum.idAlbumType):
             raise AlbumTypeInvalidException("Album type not exists")
 
-        usecase_exists_artist = exists_artist.ExistsArtist(SqlServerArtistRepository())
+        usecase_exists_artist = exists_artist.ExistsArtist(self.artist_repository)
         dtoclass = exists_artist.ExistsArtistInputDto(inputAlbum.idArtist)
         usecase_exists_artist.execute(dtoclass)
 
@@ -45,7 +46,7 @@ class CreateAlbum:
         inputAlbum.recordCompany,inputAlbum.idMusicGender, inputAlbum.idAlbumType,inputAlbum.idArtist)
 
         try:
-            self.repository.save(new_album)
+            self.album_repository.save(new_album)
             return new_album
         except DataBaseException:
             raise DataBaseException("Database error")
