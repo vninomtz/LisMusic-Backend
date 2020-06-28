@@ -25,3 +25,11 @@ class AccountRepository(abc.ABC):
     @abc.abstractmethod
     def exist_userName(self, userName: str):
         pass
+
+    @abc.abstractmethod
+    def login_with_username(self, userName:str):
+        pass
+
+    @abc.abstractmethod
+    def login_with_email(self,email: str, password: str):
+        pass

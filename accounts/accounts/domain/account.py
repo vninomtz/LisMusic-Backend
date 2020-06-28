@@ -46,11 +46,14 @@ class Account:
             "firstName": self.firstName,
             "lastName": self.lastName,
             "email": self.email,
-            "password": self.password,
             "userName": self.userName,
             "gender": self.gender,
             "birthday": self.birthday,
-            "created": self.createdDate
+            "cover": self.cover,
+            "created": self.createdDate,
+            "updated:": self.updatedDate,
+            "contentCreator:": self.contentCreator,
+
         }
         return account_to_json
     

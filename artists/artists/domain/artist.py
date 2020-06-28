@@ -23,7 +23,7 @@ class Artist:
         "idArtist": self.idArtist,
         "name": self.name,
         "cover": self.cover,
-        "registerDate": self.registerDate,
+        "registerDate": self.registerDate.strftime('%Y-%m-%d'),
         "description": self.description
     }
         return artist_to_json

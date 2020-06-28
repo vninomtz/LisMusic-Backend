@@ -1,7 +1,7 @@
 from albums.albums.application.use_cases import exists_album, get_albums_of_account, get_albums_of_artist, get_albums_of_artist, get_tracks_of_album
 from infraestructure.sqlserver_repository_album import SqlServerAlbumRepository
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
+from flask import Flask, request
+from flask_restful import Resource
 from artists.artists.domain.exceptions import ArtistNotExistsException, DataBaseException
 from infraestructure.sqlserver_repository_artist import SqlServerArtistRepository
 from artists.artists.application.use_cases import exists_artist
@@ -9,7 +9,9 @@ from albums.albums.domain.exceptions import AlbumNotExistsException
 from accounts.accounts.domain.exceptions import AccountNotExistException
 from accounts.accounts.application.use_cases import exists_account
 from infraestructure.sqlserver_repository import SqlServerAccountRepository
+from application.handlers.login_handler import authorization_token
 class AlbumsOfArtistHandler(Resource):
+    @authorization_token
     def get(self,idArtist):    
         try:
             usecase_exists_artist = exists_artist.ExistsArtist(SqlServerArtistRepository())
@@ -20,20 +22,15 @@ class AlbumsOfArtistHandler(Resource):
             dtoclass = get_albums_of_artist.GetAlbumsOfArtistInputDto(idArtist)
             list_albums = usecase.execute(dtoclass)
 
-            return jsonify([ob.to_json() for ob in list_albums])
+            return [ob.to_json() for ob in list_albums], 200
 
         except ArtistNotExistsException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 400
-            return response  
+            return {"error": str(ex)}, 400  
         except DataBaseException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 500
-            return response
+            return {"error": str(ex)}, 500
 
 class TracksOfAlbumHandler(Resource):
+    @authorization_token
     def get(self, idAlbum):
         try:
             usecase_exist_album = exists_album.ExistsAlbum(SqlServerAlbumRepository())
@@ -44,20 +41,15 @@ class TracksOfAlbumHandler(Resource):
             dtoclass = get_tracks_of_album.GetTracksOfAlbumInputDto(idAlbum)
             list_albums = usecase.execute(dtoclass)
 
-            return jsonify([ob.to_json() for ob in list_albums])
+            return [album.to_json() for album in list_albums], 200
             
         except AlbumNotExistsException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 400
-            return response 
+            return {"error": str(ex)}, 400
         except DataBaseException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 500
-            return response
+            return {"error": str(ex)}, 500
 
 class AlbumsOfAccount(Resource):
+    @authorization_token
     def get(self, idAccount):
         try:
             usecase_exits_account = exists_account.ExistAccount(SqlServerAccountRepository())
@@ -66,15 +58,10 @@ class AlbumsOfAccount(Resource):
             usecase = get_albums_of_account.GetAlbumsOfAccount(SqlServerAlbumRepository())
             dtoclass = get_albums_of_account.GetAlbumsOfAccountInputDto(idAccount)
             list_albums = usecase.execute(dtoclass)
-            return jsonify([ob.to_json() for ob in list_albums])
+
+            return [ob.to_json() for ob in list_albums], 200
 
         except AccountNotExistException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 400
-            return response
+            return {"error": str(ex)}, 400
         except DataBaseException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 500
-            return response     
+            return {"error": str(ex)}, 500    

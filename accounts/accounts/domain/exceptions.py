@@ -18,3 +18,15 @@ class EmptyFieldsException(Exception):
 
 class DataBaseException(Exception):
     pass
+
+class UserNotExistsException(Exception):
+    pass
+class EmailNotExistsException(Exception):
+    pass
+
+class EmptyFieldsException(Exception):
+    pass
+
+class LoginFailedException(Exception):
+    pass
+

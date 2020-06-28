@@ -7,3 +7,4 @@ class ArtistNotExistsException(Exception):
 
 class ArtistInvalidException(Exception):
     pass
+

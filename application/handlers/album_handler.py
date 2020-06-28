@@ -5,8 +5,8 @@ from infraestructure.sqlserver_repository_album import SqlServerAlbumRepository
 import datetime
 from albums.albums.domain.album import Album
 from albums.albums.domain.exceptions import AlbumGenderInvalidException, AlbumInvalidException, AlbumNotExistsException, AlbumTracksInvalidException, AlbumTypeInvalidException, DataBaseException
-from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
+from flask import Flask, request
+from flask_restful import Resource
 from artists.artists.domain.exceptions import ArtistInvalidException, ArtistNotExistsException
 from infraestructure.sqlserver_repository_artist import SqlServerArtistRepository
 from artists.artists.application.use_cases import exists_artist
@@ -31,41 +31,21 @@ class AlbumHandler(Resource):
             idartist = exists_artist.ExistsArtistInputDto(dtoclass.idArtist)
             usecase_exists_artist.execute(idartist)
 
-            result = usecase.execute(dtoclass)
-            if result:
-                response = jsonify(result.to_json())
-                response.status_code = 201
-                return response
+            album = usecase.execute(dtoclass)
+            return album.to_json(), 201
+
         except DataBaseException as ex: 
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 500
-            return response
+            return {"error": str(ex)}, 500
         except AlbumInvalidException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 400
-            return response
+            return {"error": str(ex)}, 400 
         except AlbumGenderInvalidException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 404
-            return response
+            return {"error": str(ex)}, 404
         except AlbumTypeInvalidException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 404
-            return response
+            return {"error": str(ex)}, 404
         except ArtistNotExistsException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 404
-            return response
+            return {"error": str(ex)}, 404
         except AlbumTracksInvalidException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 400
-            return response
+            return {"error": str(ex)}, 400 
                  
 
 

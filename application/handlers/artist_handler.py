@@ -6,7 +6,8 @@ import datetime
 from artists.artists.domain.artist import Artist
 from artists.artists.domain.exceptions import DataBaseException, ArtistNotExistsException, ArtistInvalidException
 from flask import Flask, request, jsonify
-from flask_restful import Resource, Api
+from flask_restful import Resource
+
 
 class ArtistHandler(Resource):
     def post(self):
@@ -18,17 +19,14 @@ class ArtistHandler(Resource):
             request.json["description"],
         )     
         try:
-            result = usecase.execute(dtoclass)
-            if result:
-                response = jsonify(result.to_json())
-                response.status_code = 200
-                return response
+            artist = usecase.execute(dtoclass)
+            if artist:
+                return artist.to_json(), 200
+        except ArtistInvalidException as ex: 
+            return {"error": str(ex)}, 400
         except DataBaseException as ex: 
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 500
-            return response
-
+            return {"error": str(ex)}, 500 
+       
     def put(self):
         print("Updating artist")
         usecase = update_artist.UpdateArtist(SqlServerArtistRepository())
@@ -38,25 +36,15 @@ class ArtistHandler(Resource):
             request.json["cover"],
             request.json["description"],
         )
-
-
         try:
             result = usecase.execute(dtoclass)
             if result:
-                response = jsonify({'message': 'Artist successfully updated'})
-                response.status_code = 204
-                return response
+                return {"message": "Artist successfully updated."}, 200
 
         except ArtistNotExistsException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 404
-            return response
+            return {"error": str(ex)}, 404
         except DataBaseException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 500
-            return response
+            return {"error": str(ex)}, 500
 
     def delete(self):
         print("Deleting artist...")
@@ -65,22 +53,11 @@ class ArtistHandler(Resource):
         try:
             result = usecase.execute(dtoclass)
             if result:
-                response = jsonify({'message': 'Artist successfully deleted'})
-                response.status_code = 204
-                return response
+                return {"message": "Artist successfully deleted."}, 200
         except ArtistInvalidException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 400
-            return response
+            return {"error": str(ex)}, 400
         except ArtistNotExistsException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 404
-            return response
+            return {"error": str(ex)}, 404
         except DataBaseException as ex:
-            error = str(ex)
-            response = jsonify({'error': error})
-            response.status_code = 500
-            return response
+            return {"error": str(ex)}, 500
 

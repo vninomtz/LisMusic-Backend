@@ -19,7 +19,7 @@ api.add_resource(AccountHandler, '/account')
 api.add_resource(ArtistHandler, '/artist')
 api.add_resource(AlbumHandler, '/album')
 
-#api.add_resource(LoginHandler, '/login')
+api.add_resource(LoginHandler, '/login')
 
 
 
