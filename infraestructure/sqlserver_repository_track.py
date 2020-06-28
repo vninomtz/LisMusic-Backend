@@ -73,4 +73,26 @@ class SqlServerTrackRepository(TrackRepository):
         self.connection.close()
         return result  
 
+    def get_tracks_of_playlist(self, idPlaylist:int):
+        self.connection.open()
+        sql = """
+            DECLARE	@return_value int
+
+            EXEC	@return_value = [dbo].[SPS_GetTracksOfPlaylist]
+                    @idTrack = ?
+        """
+        self.connection.cursor.execute(sql, idPlaylist)
+        rows = self.connection.cursor.fetchall()
+        listTracks = []
+        for row in rows:
+            track = Track(row.IdTrack,row.TitleTrack,row.Duration,None,row.FileTrack,row.Avaible)
+            track.album.idAlbum = row.IdAlbum
+            track.album.title = row.TitleAlbum
+            track.album.cover = row.Cover
+            track.album.artist.idArtist = row.IdArtist
+            track.album.artist.name = row.NameArtist
+            listTracks.append(track)
+
+        self.connection.close()
+        return listTracks
    

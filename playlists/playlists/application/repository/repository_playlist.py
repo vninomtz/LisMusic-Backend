@@ -21,3 +21,5 @@ class PlaylistRepository(abc.ABC):
     @abc.abstractmethod
     def get_playlist_of_account(self, idAccount:str):
         pass
+
+    

@@ -12,6 +12,7 @@ class Track:
         self.reproductions: int = reproductions
         self.fileTrack: str = fileTrack
         self.avaible: bool = avaible
+        self.album: Album = Album()
 
     @classmethod
     def create(cls, title,duration, fileTrack):
@@ -33,5 +34,19 @@ class Track:
             "reproducitons": self.reproductions,
             "fileTrack": self.fileTrack,
             "avaible": self.avaible
+        }
+        return track_to_json;
+    
+    def to_json_for_playlist(self):
+        track_to_json = {
+            "idTrack": self.idTrack,
+            "title": self.title,
+            "duration": self.duration,
+            "fileTrack": self.fileTrack,
+            "avaible": self.avaible,
+            "cover": self.album.cover,
+            "artist_name": self.album.artist.name,
+            "album_uri": '/album/{}'.format(self.album.idAlbum),
+            "artist_uri": '/artist/{}'.format(self.album.artist.idArtist)
         }
         return track_to_json;

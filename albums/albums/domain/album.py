@@ -1,5 +1,6 @@
 
 from albums.albums.domain.exceptions import AlbumInvalidException, AlbumTypeInvalidException
+from artists.artists.domain.artist import Artist
 import datetime
 from uuid import uuid4
 class Album:
@@ -13,6 +14,7 @@ class Album:
         self.idMusicGender = idMusicGender
         self.idAlbumType = idAlbumType
         self.idArtist = idArtist
+        self.artist = Artist()
 
     @classmethod    
     def create(cls, title,cover,publication,recordCompany,idMusicGender,idAlbumType, idArtist):

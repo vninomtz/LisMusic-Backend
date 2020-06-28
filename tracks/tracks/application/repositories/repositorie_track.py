@@ -18,5 +18,9 @@ class TrackRepository(abc.ABC):
     def exists_track(self, idTrack: str):
         pass
 
+    @abc.abstractmethod
+    def get_tracks_of_playlist(self, idPlaylist:int):
+        pass
+
 
 

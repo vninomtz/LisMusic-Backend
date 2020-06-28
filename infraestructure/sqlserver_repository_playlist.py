@@ -37,7 +37,8 @@ class PlaylistRepository(PlaylistRepository):
             playlist = Playlist(row.IdPlaylist, row.Title,row.Creation,row.Cover,row.PublicPlaylist,
                 row.IdPlaylistType,row.IdAccount)
             listPlaylist.append(playlist)
-        
+        self.connection.close()
         return listPlaylist
+
 
 
