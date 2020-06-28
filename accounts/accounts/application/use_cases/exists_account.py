@@ -1,5 +1,5 @@
 from accounts.accounts.application.repositories.repositorie_account import AccountRepository
-from accounts.accounts.domain.exceptions import DataBaseException
+from accounts.accounts.domain.exceptions import AccountNotExistException, DataBaseException
 from accounts.accounts.domain.account import Account
 
 
@@ -10,7 +10,11 @@ class ExistAccount:
     def execute(self, idAccount):
    
         try:
-            return self.repository.exist_account(idAccount)
+            exists = self.repository.exist_account(idAccount)
+            if not exists:
+                raise AccountNotExistException("Account not exist")
+            
+            return exists
         except DataBaseException as ex:
             raise DataBaseException(ex)
         
