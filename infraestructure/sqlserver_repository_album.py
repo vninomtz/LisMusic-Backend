@@ -179,3 +179,36 @@ class SqlServerAlbumRepository(AlbumRepository):
             
             return list_tracks     
 
+
+
+    def get_albums_of_account(self, idAccount: str):
+        self.connection.open()
+        sql = """\
+        DECLARE	@return_value int,
+                @estado int,
+                @salida nvarchar(1000)
+         EXEC    @return_value = [dbo].[SPS_GetAlbumsOfAccount]
+                @idAccount = ?,
+                @estado = @estado OUTPUT,
+                @salida = @salida OUTPUT
+
+        SELECT	@estado as N'@estado',
+                @salida as N'@salida'
+        """
+
+        self.connection.cursor.execute(sql,idAccount)
+        rows = self.connection.cursor.fetchall()
+        list_albums = []
+        for row in rows:
+            album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication.strftime('%Y-%m-%d'), row.RecordCompany,
+                            row.IdMusicGender, row.IdAlbumType, row.IdArtist)
+            list_albums.append(album)
+
+        return list_albums
+            
+    def update(self, album: Album):
+        pass
+        
+
+    def delete(self, idAlbum: str):
+        pass

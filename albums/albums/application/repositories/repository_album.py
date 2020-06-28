@@ -27,7 +27,11 @@ class AlbumRepository(abc.ABC):
     def get_tracks_of_album(self, idAlbum: str):
         pass
 
-"""     @abc.abstractmethod
+    @abc.abstractmethod
+    def get_albums_of_account(self, idAccount: str):
+        pass
+
+    @abc.abstractmethod
     def update(self, album: Album):
         pass
         
@@ -35,7 +39,7 @@ class AlbumRepository(abc.ABC):
     def delete(self, idAlbum: str):
         pass
 
-  """
+
 
     
 
