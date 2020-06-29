@@ -44,7 +44,7 @@ class Track:
             "duration": self.duration,
             "fileTrack": self.fileTrack,
             "avaible": self.avaible,
-            "cover": self.album.cover,
+            "cover": '/media/albums/{}'.format(self.album.cover),
             "artist_name": self.album.artist.name,
             "album_uri": '/album/{}'.format(self.album.idAlbum),
             "artist_uri": '/artist/{}'.format(self.album.artist.idArtist)

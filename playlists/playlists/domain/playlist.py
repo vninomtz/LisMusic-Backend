@@ -29,7 +29,7 @@ class Playlist:
             "idPlaylist":self.idPlaylist,
             "title":self.title,
             "creation": str(self.creation),
-            "cover":self.cover,
+            "cover": '/media/playlists/{}'.format(self.cover),
             "publicPlaylist":self.publicPlaylist,
             "idPlaylistType":self.idPlaylistType,
             "idAccount":self.idAccount
