@@ -1,7 +1,7 @@
 #Playlist imports
 from playlists.playlists.application.use_cases.get_playlist_of_account import GetPlaylistForAccount
 from playlists.playlists.domain.exceptions import DataBaseException,EmptyFieldsException
-from infraestructure.sqlserver_repository_playlist import PlaylistRepository
+from infraestructure.sqlserver_repository_playlist import SqlServerPlaylistRepository
 #Account imports
 from infraestructure.sqlserver_repository import SqlServerAccountRepository
 from accounts.accounts.application.use_cases.exists_account import ExistAccount
@@ -15,7 +15,7 @@ from flask import jsonify
 
 class PlaylistAccountHandler(Resource):
     def get(self, idAccount):
-        usecase = GetPlaylistForAccount(PlaylistRepository())
+        usecase = GetPlaylistForAccount(SqlServerPlaylistRepository())
         try:
             usecaseAccount = ExistAccount(SqlServerAccountRepository())
         

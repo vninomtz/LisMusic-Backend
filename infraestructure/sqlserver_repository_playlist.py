@@ -2,7 +2,7 @@ from playlists.playlists.application.repository.repository_playlist import Playl
 from playlists.playlists.domain.playlist import Playlist
 from infraestructure.connection import ConnectionSQL
 
-class PlaylistRepository(PlaylistRepository):
+class SqlServerPlaylistRepository(PlaylistRepository):
     def __init__(self):
         self.connection = ConnectionSQL()
     
@@ -35,7 +35,9 @@ class PlaylistRepository(PlaylistRepository):
         rows = self.connection.cursor.fetchall()
         for row in rows:
             playlist = Playlist(row.IdPlaylist, row.Title,row.Creation,row.Cover,row.PublicPlaylist,
-                row.IdPlaylistType,row.IdAccount)
+                row.IdPlaylistType)
+            playlist.account.idAccount = row.IdAccount
+            playlist.account.userName = row.UserName
             listPlaylist.append(playlist)
         self.connection.close()
         return listPlaylist
