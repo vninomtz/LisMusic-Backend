@@ -22,7 +22,7 @@ class Artist:
         artist_to_json = {
         "idArtist": self.idArtist,
         "name": self.name,
-        "cover": self.cover,
+        "cover": 'http://10.0.2.2:6000/media/artists/{}'.format(self.cover),
         "registerDate": self.registerDate.strftime('%Y-%m-%d'),
         "description": self.description
     }
