@@ -3,8 +3,10 @@ sys.path.append("../../")
 from application.read.handlers.playlist_handler import PlaylistAccountHandler, PlaylistTracksHandler
 from application.read.handlers.album_handler import AlbumsLikeOfAccountHandler, AlbumsOfArtistHandler, TracksOfAlbumHandler
 from application.read.handlers.media_handler import MediaHandler,MediaAlbumsHandler, MediaPlaylistsHandler
+from application.read.handlers.artist_handler import ArtistsLikeOfAccountHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -17,8 +19,7 @@ api.add_resource(AlbumsLikeOfAccountHandler, '/account/<string:idAccount>/albums
 api.add_resource(MediaHandler, '/media/<string:nameFile>')
 api.add_resource(MediaAlbumsHandler, '/media/albums/<string:nameFile>')
 api.add_resource(MediaPlaylistsHandler, '/media/playlists/<string:nameFile>')
-
-
+api.add_resource(ArtistsLikeOfAccountHandler, '/account/<string:idAccount>/artistsLike')
 
 
 if __name__ == "__main__":

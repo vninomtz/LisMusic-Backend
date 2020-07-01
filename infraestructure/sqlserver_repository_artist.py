@@ -116,3 +116,27 @@ class SqlServerArtistRepository(ArtistRepository):
             
         self.connection.close()
         return result
+
+    def get_artists_like_of_account(self, idAccount: str):
+            self.connection.open()
+            sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+            EXEC    @return_value = [dbo].[SPS_GetArtistsLikeOfAccount]
+                    @idAccount = ?,
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+            """
+
+            self.connection.cursor.execute(sql,idAccount)
+            rows = self.connection.cursor.fetchall()
+            list_artists = []
+            for row in rows:
+                artist = Artist(row.IdArtist,row.Name,row.Cover,row.RegisterDate, row.Description)
+                list_artists.append(artist)
+
+            return list_artists

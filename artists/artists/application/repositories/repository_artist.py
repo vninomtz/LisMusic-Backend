@@ -22,4 +22,10 @@ class ArtistRepository(abc.ABC):
     def exist_artist(self, idArtist: str):
         pass
 
+    @abc.abstractmethod
+    def get_artists_like_of_account(self, idAccount: str):
+        pass
+
+    
+
     
