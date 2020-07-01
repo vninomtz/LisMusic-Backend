@@ -28,7 +28,7 @@ class AlbumRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get_albums_of_account(self, idAccount: str):
+    def get_albums_like_of_account(self, idAccount: str):
         pass
 
     @abc.abstractmethod

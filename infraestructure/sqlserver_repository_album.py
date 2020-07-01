@@ -180,14 +180,13 @@ class SqlServerAlbumRepository(AlbumRepository):
             return list_tracks     
 
 
-
-    def get_albums_of_account(self, idAccount: str):
+    def get_albums_like_of_account(self, idAccount: str):
         self.connection.open()
         sql = """\
         DECLARE	@return_value int,
                 @estado int,
                 @salida nvarchar(1000)
-         EXEC    @return_value = [dbo].[SPS_GetAlbumsOfAccount]
+         EXEC    @return_value = [dbo].[SPS_GetAlbumsLikeOfAccount]
                 @idAccount = ?,
                 @estado = @estado OUTPUT,
                 @salida = @salida OUTPUT

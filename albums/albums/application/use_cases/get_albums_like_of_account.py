@@ -7,16 +7,16 @@ from dataclasses import dataclass
 import json
 
 @dataclass
-class GetAlbumsOfAccountInputDto:
+class GetAlbumsLikeOfAccountInputDto:
     idAlbum: str = None
 
-class GetAlbumsOfAccount:
+class GetAlbumsLikeOfAccount:
     def __init__(self, album_repository: AlbumRepository):
         self.album_repository = album_repository
        
-    def execute(self, inputAlbum: GetAlbumsOfAccountInputDto):
+    def execute(self, inputAlbum: GetAlbumsLikeOfAccountInputDto):
         try:
-            list_albums = self.album_repository.get_albums_of_account(inputAlbum.idAlbum)
+            list_albums = self.album_repository.get_albums_like_of_account(inputAlbum.idAlbum)
             return list_albums
         except DataBaseException as ex:
             raise DataBaseException(ex)
