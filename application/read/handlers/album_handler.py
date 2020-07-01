@@ -8,7 +8,7 @@ from artists.artists.application.use_cases import exists_artist
 from albums.albums.domain.exceptions import AlbumNotExistsException
 from accounts.accounts.domain.exceptions import AccountNotExistException
 from accounts.accounts.application.use_cases import exists_account
-from infraestructure.sqlserver_repository import SqlServerAccountRepository
+from infraestructure.sqlserver_repository_account import SqlServerAccountRepository
 from application.handlers.login_handler import authorization_token
 class AlbumsOfArtistHandler(Resource):
     @authorization_token

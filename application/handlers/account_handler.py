@@ -1,7 +1,7 @@
 import sys
 sys.path.append("../../")
 from accounts.accounts.application.use_cases import create_account, update_account, delete_account
-from infraestructure.sqlserver_repository import SqlServerAccountRepository
+from infraestructure.sqlserver_repository_account import SqlServerAccountRepository
 import datetime
 from accounts.accounts.domain.account import Account
 from accounts.accounts.domain.exceptions import AccountInvalidException, DataBaseException, AccountNotExistException

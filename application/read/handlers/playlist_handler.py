@@ -3,7 +3,7 @@ from playlists.playlists.application.use_cases.get_playlist_of_account import Ge
 from playlists.playlists.domain.exceptions import DataBaseException,EmptyFieldsException
 from infraestructure.sqlserver_repository_playlist import SqlServerPlaylistRepository
 #Account imports
-from infraestructure.sqlserver_repository import SqlServerAccountRepository
+from infraestructure.sqlserver_repository_account import SqlServerAccountRepository
 from accounts.accounts.application.use_cases.exists_account import ExistAccount
 #Track imports
 from infraestructure.sqlserver_repository_track import SqlServerTrackRepository

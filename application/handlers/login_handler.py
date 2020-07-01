@@ -3,7 +3,7 @@ from flask import Flask, request
 from flask_restful import Resource
 from functools import wraps
 from accounts.accounts.application.use_cases import login_account
-from infraestructure.sqlserver_repository import SqlServerAccountRepository
+from infraestructure.sqlserver_repository_account import SqlServerAccountRepository
 from accounts.accounts.domain.exceptions import DataBaseException, LoginFailedException, UserNotExistsException
 import jwt, config, datetime
 
