@@ -14,3 +14,7 @@ class MediaAlbumsHandler(Resource):
 class MediaPlaylistsHandler(Resource):
     def get(self,nameFile):
         return send_from_directory(config.PLAYLISTS_DIR, nameFile)
+
+class MediaArtistsHandler(Resource):
+    def get(self,fileName):
+        return send_from_directory(config.ARTISTS_DIR, fileName)
