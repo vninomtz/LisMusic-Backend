@@ -28,7 +28,7 @@ class Album:
         album_to_json = {
         "idAlbum": self.idAlbum,
         "title": self.title,
-        "cover": self.cover,
+        "cover": 'http://10.0.2.2:6000/media/albums/{}'.format(self.cover),
         "publication": self.publication,
         "recordCompany": self.recordCompany,
         "idMusicGender": self.idMusicGender,
