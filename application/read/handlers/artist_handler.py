@@ -19,5 +19,5 @@ class ArtistsLikeOfAccountHandler(Resource):
 
         except AccountNotExistException as ex:
             return {"error": str(ex)}, 400
-        except DataBaseException as ex:
+        except Exception as ex:
             return {"error": str(ex)}, 500    

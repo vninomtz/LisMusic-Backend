@@ -120,6 +120,7 @@ class SqlServerArtistRepository(ArtistRepository):
     def get_artists_like_of_account(self, idAccount: str):
             self.connection.open()
             sql = """\
+            SET NOCOUNT ON;        
             DECLARE	@return_value int,
                     @estado int,
                     @salida nvarchar(1000)
