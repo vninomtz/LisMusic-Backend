@@ -107,8 +107,7 @@ class SqlServerAccountRepository(AccountRepository):
             raise DataBaseException("Error al actualizar la Base de datos: ", ex)
 
 
-    def exist_account(self, idAccount:str):
-        self.connection.open()
+    def exist_account(self, idAccount:str):    
         sql = """\
             DECLARE	@return_value int,
                     @estado int,
@@ -122,14 +121,19 @@ class SqlServerAccountRepository(AccountRepository):
             SELECT	@estado as N'@estado',
                     @salida as N'@salida'
         """
-        self.connection.cursor.execute(sql, idAccount)
+        try:
+            self.connection.open()
+            self.connection.cursor.execute(sql, idAccount)         
+        except Exception as ex:
+            raise DataBaseException("Database connection error")
+
+      
         row = self.connection.cursor.fetchval()
         result = False
         if row == -1:
             result = False
         else:
             result = True
-        
         self.connection.close()
         return result
 

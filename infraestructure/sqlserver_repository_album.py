@@ -181,8 +181,8 @@ class SqlServerAlbumRepository(AlbumRepository):
 
 
     def get_albums_like_of_account(self, idAccount: str):
-        self.connection.open()
         sql = """\
+        SET NOCOUNT ON;    
         DECLARE	@return_value int,
                 @estado int,
                 @salida nvarchar(1000)
@@ -194,8 +194,12 @@ class SqlServerAlbumRepository(AlbumRepository):
         SELECT	@estado as N'@estado',
                 @salida as N'@salida'
         """
-
-        self.connection.cursor.execute(sql,idAccount)
+        try:
+            self.connection.open()
+            self.connection.cursor.execute(sql,idAccount)
+            pass
+        except DataBaseException as ex:
+            raise ("Database connection error")
         rows = self.connection.cursor.fetchall()
         list_albums = []
         for row in rows:
