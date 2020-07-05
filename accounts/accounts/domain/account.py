@@ -35,7 +35,6 @@ class Account:
         return newAccount
 
     def encode(self, password:str):
-        print("Encoding password")
         pass_sha = hashlib.sha256(password.encode('utf-8'))
         pass_sha_hex = pass_sha.hexdigest()
         return pass_sha_hex
