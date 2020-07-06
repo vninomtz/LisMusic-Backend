@@ -33,6 +33,7 @@ class LoginHandler(Resource):
             request.json["user"],
             request.json["password"],
         )
+
         try:
             account = usecase.execute(dtoclass) 
         except UserNotExistsException as ex:

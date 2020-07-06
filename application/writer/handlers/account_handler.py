@@ -27,6 +27,9 @@ class AccountHandler(Resource):
             request.json["cover"],
             request.json["typeRegister"]
         )
+
+
+        
         try:
             result = usecase.execute(dtoclass)
             if result:
