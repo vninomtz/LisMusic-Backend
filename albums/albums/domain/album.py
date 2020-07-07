@@ -33,6 +33,7 @@ class Album:
         "recordCompany": self.recordCompany,
         "idMusicGender": self.idMusicGender,
         "idAlbumType": self.idAlbumType,
-        "idArtist": self.idArtist,
+        "idArtist": self.artist.idArtist,
+        "artistName": self.artist.name
     }
         return album_to_json

@@ -14,7 +14,7 @@ class AlbumsOfArtistHandler(Resource):
     @authorization_token
     def get(self,idArtist):    
         try:
-            usecase_exists_artist = exists_artisst.ExistsArtist(SqlServerArtistRepository())
+            usecase_exists_artist = exists_artist.ExistsArtist(SqlServerArtistRepository())
             dtoclass_artist = exists_artist.ExistsArtistInputDto(idArtist)
             usecase_exists_artist.execute(dtoclass_artist)
 
