@@ -14,7 +14,7 @@ module Stream
       self.unmarshal_class_method = :decode
       self.service_name = 'stream.StreamingService'
 
-      rpc :GetTrackAudio, TrackRequest, TrackSample
+      rpc :GetTrackAudio, TrackRequest, stream(TrackSample)
     end
 
     Stub = Service.rpc_stub_class

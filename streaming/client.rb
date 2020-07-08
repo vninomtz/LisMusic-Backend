@@ -8,14 +8,21 @@ require "zlib"
 
 def  main
     hostname = 'localhost:8000'
+    audio = []
     stub = Stream::StreamingService::Stub.new(hostname, :this_channel_is_insecure)
     begin
         track_sample = stub.get_track_audio(Stream::TrackRequest.new(idTrack: '12345', quality: nil))
+        track_sample.each do |chunk|
+            audio << chunk.audio
+        end
     rescue GRPC::BadStatus => e
         abort "Error: #{e.message}"
     end
+   
     File.open('./media/track2.mp3', 'w') do |destin_file|
-        destin_file.write track_sample.audio  
+        audio.each do |chunk|
+            destin_file.write chunk
+        end
     end
 
 

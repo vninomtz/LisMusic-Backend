@@ -17,5 +17,5 @@ message TrackSample {
 }
 
 service StreamingService {
-    rpc GetTrackAudio (TrackRequest) returns (TrackSample);
+    rpc GetTrackAudio (TrackRequest) returns (stream TrackSample);
 }
