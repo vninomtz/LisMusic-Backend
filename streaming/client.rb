@@ -14,22 +14,9 @@ def  main
     rescue GRPC::BadStatus => e
         abort "Error: #{e.message}"
     end
-   
-    #File (Sin comprimir)
-    Zlib::GzipWriter.open('./media/track2.bin') do |destin_file|
+    File.open('./media/track2.mp3', 'w') do |destin_file|
         destin_file.write track_sample.audio  
     end
-
-    
-
- 
-    
-
-   
-
-  
-
-
 
 
 end

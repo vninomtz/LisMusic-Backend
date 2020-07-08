@@ -16,12 +16,11 @@ class StreamingServer < Stream::StreamingService::Service
         File.open "./media/track1.mp3", "r" do |source_file|
             until source_file.eof?
                 chunk = source_file.read 100000 
-                track_sample.audio = chunk + track_sample.audio
+                track_sample.audio = track_sample.audio + chunk 
             end
         end
         return track_sample
     end
-    
 end
 
 
