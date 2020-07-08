@@ -6,6 +6,8 @@ $LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
 
 require 'grpc'
 require 'stream_services_pb'
+require 'rest-client'
+require 'json'
 
 class TrackSampleEnum
     def initialize(listSamples)
@@ -16,7 +18,6 @@ class TrackSampleEnum
         return enum_for(:each) unless block_given?
         begin
             @samples.each do |sample|
-                print "Enumerable"
                 yield Stream::TrackSample.new(audio: sample)
             end
             
@@ -26,25 +27,26 @@ class TrackSampleEnum
     end
 end
 
+def get_track(idTrack)
+    puts "Me llegó el track #{idTrack}"
+    response = RestClient.get("http://0.0.0.0:6000/track/#{idTrack}")
+    results = JSON.parse(response.to_str)
+    file = results['fileTrack']
+    return file
+end
+
 
 class StreamingServer < Stream::StreamingService::Service    
-    def get_track_audio(track_request,_unused_call)
+    def get_track_audio(track_request, _unused_call)
         idTrack = track_request.idTrack
-        puts 'El track es: ',idTrack
-        #track_sample = Stream::TrackSample.new(audio: nil)
-        
+        name = get_track(idTrack)
         listSamples = []
-        File.open "./media/track1.mp3", "r" do |source_file|
+        File.open "./media/#{name}", "r" do |source_file|
             until source_file.eof?
                 chunk = source_file.read 100000 
-                #track_sample.audio = track_sample.audio + chunk 
-                
                 listSamples.push(chunk) 
             end
         end
-        puts "#{
-            listSamples.length}"
-        #return track_sample
         TrackSampleEnum.new(listSamples).each
     end
 end
@@ -54,7 +56,7 @@ def main
     server = GRPC::RpcServer.new
     server.add_http2_port('0.0.0.0:8000', :this_port_is_insecure)
     server.handle(StreamingServer)
-    print 'Grpc streaming server is running'
+    puts "Server running in 0.0.0.0:8000"
     server.run_till_terminated_or_interrupted([1, 'int', 'SIGQUIT'])
 end
 

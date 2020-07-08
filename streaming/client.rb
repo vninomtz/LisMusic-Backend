@@ -11,7 +11,7 @@ def  main
     audio = []
     stub = Stream::StreamingService::Stub.new(hostname, :this_channel_is_insecure)
     begin
-        track_sample = stub.get_track_audio(Stream::TrackRequest.new(idTrack: '12345', quality: nil))
+        track_sample = stub.get_track_audio(Stream::TrackRequest.new(idTrack: '004a2196-c2ae-44e0-9e03-ff36d2b7164b', quality: nil))
         track_sample.each do |chunk|
             audio << chunk.audio
         end

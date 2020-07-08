@@ -6,3 +6,6 @@ class DataBaseException(Exception):
 
 class InvalidParamsException(Exception):
     pass
+
+class TrackNotExistsException(Exception):
+    pass

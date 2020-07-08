@@ -95,4 +95,17 @@ class SqlServerTrackRepository(TrackRepository):
 
         self.connection.close()
         return listTracks
+
+    
+    def get_track(self, idTrack:str):
+        self.connection.open()
+        sql = "Select * FROM Tracks WHERE IdTrack = ?"
+        try:
+            self.connection.cursor.execute(sql, idTrack)
+            row = self.connection.cursor.fetchone()
+            return Track(row.IdTrack,row.Title,row.Duration,row.Reproductions, row.FileTrack, row.Avaible)
+        except Exception as ex:
+            raise DataBaseException("Data base connection error")
+        finally:
+            self.connection.close()
    

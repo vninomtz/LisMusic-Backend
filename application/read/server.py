@@ -4,6 +4,7 @@ from application.read.handlers.playlist_handler import PlaylistAccountHandler, P
 from application.read.handlers.album_handler import AlbumsLikeOfAccountHandler, AlbumsOfArtistHandler, TracksOfAlbumHandler
 from application.read.handlers.media_handler import MediaAlbumsHandler, MediaArtistsHandler, MediaHandler, MediaPlaylistsHandler
 from application.read.handlers.artist_handler import ArtistsLikeOfAccountHandler
+from application.read.handlers.track_handler import TrackHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 
@@ -21,6 +22,7 @@ api.add_resource(MediaAlbumsHandler, '/media/albums/<string:nameFile>')
 api.add_resource(MediaPlaylistsHandler, '/media/playlists/<string:nameFile>')
 api.add_resource(MediaArtistsHandler, '/media/artists/<string:fileName>')
 api.add_resource(ArtistsLikeOfAccountHandler, '/account/<string:idAccount>/artistsLike')
+api.add_resource(TrackHandler, '/track/<string:idTrack>')
 
 
 if __name__ == "__main__":
