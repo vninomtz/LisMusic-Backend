@@ -9,7 +9,7 @@ ALBUMS_DIR = os.path.join(MEDIA_DIR, 'albums')
 PLAYLISTS_DIR = os.path.join(MEDIA_DIR, 'playlists')
 ARTISTS_DIR = os.path.join(MEDIA_DIR, 'artists')
 
-DATABASE_SERVER_IP = '25.111.36.180'
+DATABASE_SERVER_IP = '25.12.29.39,1443'
 DATABASE_NAME = 'LisMusicDB'
 DATABASE_USERNAME = 'sa'
 DATABASE_PASSWORD = '12345'
