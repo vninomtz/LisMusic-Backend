@@ -1,6 +1,6 @@
 from playlists.playlists.domain.exceptions import InvalidPlaylistException
 from accounts.accounts.domain.account import Account
-import datetime
+import datetime 
 
 class Playlist:
     def __init__(self, idPlaylist=None, title=None, creation=None, cover=None, publicPlaylist=None,
@@ -21,7 +21,7 @@ class Playlist:
         if not cover:
             cover = "defaultPlaylistCover.jpg"
 
-        newPlaylist = Playlist(None, title, datetime.datetime.now(),cover,publicPlaylist, idPlaylistType, idAccount)
+        newPlaylist = Playlist(None, title, datetime.datetime.now(),cover,publicPlaylist, idPlaylistType)
 
         return newPlaylist
 
@@ -36,5 +36,17 @@ class Playlist:
             "idAccount": 'http://10.0.2.2:6000/account/{}'.format(self.account.idAccount),
             "owner":self.account.userName
         }
+        return playlist_to_json
+
+    def to_json_create(self):
+        playlist_to_json = {
+            "title":self.title,
+            "creation": str(self.creation),
+            "cover": 'http://10.0.2.2:6000/media/playlists/{}'.format(self.cover),
+            "publicPlaylist":self.publicPlaylist,
+            "idPlaylistType":self.idPlaylistType,
+            "idAccount": 'http://10.0.2.2:6000/account/{}'.format(self.account.idAccount),  
+        }
+        
         return playlist_to_json
         
