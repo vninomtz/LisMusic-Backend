@@ -5,6 +5,7 @@ from application.handlers.account_handler import AccountHandler
 from application.handlers.login_handler import LoginHandler
 from application.handlers.artist_handler import ArtistHandler
 from application.handlers.album_handler import AlbumHandler
+from application.handlers.playlist_handler import PlaylistHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 #from flask_jwt_extended import JWTManager, jwt_required
@@ -20,6 +21,7 @@ api.add_resource(ArtistHandler, '/artist')
 api.add_resource(AlbumHandler, '/album')
 
 api.add_resource(LoginHandler, '/login')
+api.add_resource(PlaylistHandler, '/playlist')
 
 
 

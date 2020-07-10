@@ -6,3 +6,6 @@ class DataBaseException(Exception):
 
 class EmptyFieldsException(Exception):
     pass
+
+class PlaylistInvalidException(Exception):
+    pass
