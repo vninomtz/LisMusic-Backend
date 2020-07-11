@@ -2,11 +2,11 @@ import sys
 sys.path.append("../../")
 
 
-from application.handlers.account_handler import AccountHandler
-from application.handlers.login_handler import LoginHandler
-from application.handlers.artist_handler import ArtistHandler
-from application.handlers.album_handler import AlbumHandler
-from application.handlers.playlist_handler import PlaylistHandler
+from application.writer.handlers.account_handler import AccountHandler
+from application.writer.handlers.login_handler import LoginHandler
+from application.writer.handlers.artist_handler import ArtistHandler
+from application.writer.handlers.album_handler import AlbumHandler
+from application.writer.handlers.playlist_handler import PlaylistHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 #from flask_jwt_extended import JWTManager, jwt_required
