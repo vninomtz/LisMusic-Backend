@@ -5,7 +5,7 @@ import datetime
 from uuid import uuid4
 class Album:
     def __init__(self,idAlbum=None,title=None,cover=None,publication=None,recordCompany=None,
-                idMusicGender=None,idAlbumType=None, idArtist=None):
+                idMusicGender=None,idAlbumType=None, artistName=None):
         self.idAlbum = idAlbum
         self.title = title
         self.cover = cover
@@ -13,8 +13,8 @@ class Album:
         self.recordCompany = recordCompany
         self.idMusicGender = idMusicGender
         self.idAlbumType = idAlbumType
-        self.idArtist = idArtist
         self.artist = Artist()
+        self.artist.name = artistName
 
     @classmethod    
     def create(cls, title,cover,publication,recordCompany,idMusicGender,idAlbumType, idArtist):
@@ -33,7 +33,6 @@ class Album:
         "recordCompany": self.recordCompany,
         "idMusicGender": self.idMusicGender,
         "idAlbumType": self.idAlbumType,
-        "idArtist": self.artist.idArtist,
         "artistName": self.artist.name
     }
         return album_to_json
