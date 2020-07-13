@@ -13,7 +13,10 @@ from tracks.tracks.domain.exceptions import InvalidParamsException
 from flask_restful import Resource, abort
 from flask import jsonify
 
+from application.writer.handlers.login_handler import authorization_token
+
 class PlaylistAccountHandler(Resource):
+    @authorization_token
     def get(self, idAccount):
         usecase = GetPlaylistForAccount(SqlServerPlaylistRepository())
         try:
