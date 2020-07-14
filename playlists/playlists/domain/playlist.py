@@ -30,10 +30,10 @@ class Playlist:
             "idPlaylist":self.idPlaylist,
             "title":self.title,
             "creation": str(self.creation),
-            "cover": 'http://10.0.2.2:6000/media/playlists/{}'.format(self.cover),
+            "cover": 'http://localhost:6000/media/playlists/{}'.format(self.cover),
             "publicPlaylist":self.publicPlaylist,
             "idPlaylistType":self.idPlaylistType,
-            "idAccount": 'http://10.0.2.2:6000/account/{}'.format(self.account.idAccount),
+            "idAccount": 'http://localhost:6000/account/{}'.format(self.account.idAccount),
             "owner":self.account.userName
         }
         return playlist_to_json

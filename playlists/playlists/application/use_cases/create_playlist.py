@@ -7,7 +7,7 @@ from dataclasses import dataclass
 class CreatePlaylistInputDto:
     title: str = None
     cover: str = None
-    publicPlaylist: str = None
+    publicPlaylist: bool = None
     idPlaylistType: str = None
     idAccount: str = None
 
@@ -18,8 +18,8 @@ class CreatePlaylist:
         def execute(self, inputPlaylist: CreatePlaylistInputDto):
             new_playlist = Playlist.create(inputPlaylist.title, inputPlaylist.cover, inputPlaylist.publicPlaylist, inputPlaylist.idPlaylistType, inputPlaylist.idAccount)
 
-            if not inputPlaylist.title or not inputPlaylist.cover or not inputPlaylist.publicPlaylist or not inputPlaylist.idPlaylistType:
-                raise PlaylistInvalidException
+            if not inputPlaylist.title or not inputPlaylist.cover or not inputPlaylist.idPlaylistType:
+                raise PlaylistInvalidException("Empty Fields ")
           #  print("id" + .idAccount)
 
             new_playlist.account.idAccount = inputPlaylist.idAccount
