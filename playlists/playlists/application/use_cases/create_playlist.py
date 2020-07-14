@@ -1,6 +1,8 @@
 from infraestructure.sqlserver_repository_playlist import PlaylistRepository
 from playlists.playlists.domain.playlist import Playlist
 from playlists.playlists.domain.exceptions import DataBaseException, PlaylistInvalidException
+import datetime
+from utils import Image
 from dataclasses import dataclass
 
 @dataclass
@@ -16,11 +18,17 @@ class CreatePlaylist:
             self.repository = repository
 
         def execute(self, inputPlaylist: CreatePlaylistInputDto):
-            new_playlist = Playlist.create(inputPlaylist.title, inputPlaylist.cover, inputPlaylist.publicPlaylist, inputPlaylist.idPlaylistType, inputPlaylist.idAccount)
-
-            if not inputPlaylist.title or not inputPlaylist.cover or not inputPlaylist.idPlaylistType:
+            if not inputPlaylist.title or not inputPlaylist.idPlaylistType:
                 raise PlaylistInvalidException("Empty Fields ")
-          #  print("id" + .idAccount)
+
+            if inputPlaylist.cover:
+                nameCover = self.generate_name(inputPlaylist.title)
+                if Image.Image.save_image(inputPlaylist.cover, nameCover, "Playlist"):
+                    inputPlaylist.cover = nameCover
+            else:
+                inputPlaylist.cover = "defaultPlaylistCover.jpeg"
+
+            new_playlist = Playlist.create(inputPlaylist.title, inputPlaylist.cover, inputPlaylist.publicPlaylist, inputPlaylist.idPlaylistType, inputPlaylist.idAccount)
 
             new_playlist.account.idAccount = inputPlaylist.idAccount
 
@@ -30,6 +38,11 @@ class CreatePlaylist:
                 return new_playlist
             except DataBaseException as ex:
                 raise ex("Database connection error")
+
+        def generate_name(self, title:str):
+            newTitle = title.replace(" ", "")
+            date = datetime.date.today()
+            return "{0}_{1}.{2}".format(str(date), newTitle, "png")
         
 
 
