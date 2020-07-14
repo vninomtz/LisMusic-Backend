@@ -31,7 +31,7 @@ class Track:
             "idTrack": self.idTrack,
             "title": self.title,
             "duration": self.duration,
-            "reproducitons": self.reproductions,
+            "reproductions": self.reproductions,
             "fileTrack": self.fileTrack,
             "avaible": self.avaible
         }
