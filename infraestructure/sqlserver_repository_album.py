@@ -146,7 +146,7 @@ class SqlServerAlbumRepository(AlbumRepository):
         list_albums = []
         for row in rows:
             album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication.strftime('%Y-%m-%d'), row.RecordCompany,
-                            row.GenderName, row.IdAlbumType)
+                            None, row.IdAlbumType, row.ArtistName,row.GenderName)
             album.artist.idArtist = row.IdArtist
             album.artist.name = row.ArtistName
             list_albums.append(album)
