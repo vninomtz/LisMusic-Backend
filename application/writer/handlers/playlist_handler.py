@@ -1,4 +1,4 @@
-from playlists.playlists.application.use_cases import create_playlist, exists_playlist, delete_playlist
+from playlists.playlists.application.use_cases import create_playlist, exists_playlist, delete_playlist, update_playlist
 from infraestructure.sqlserver_repository_playlist import SqlServerPlaylistRepository
 from flask import Flask, request
 from flask_restful import Resource
@@ -34,6 +34,27 @@ class PlaylistHandler(Resource):
         except EmptyFieldsException as ex:
             return {"error": str(ex)}, 400
         except PlaylistNotExistException as ex:
+            return {"error": str(ex)}, 404
+        except DataBaseException as ex:
+            return {"error": str(ex)}, 500
+
+    def put(self, idPlaylist):
+        update_usecase = update_playlist.UpdatePlaylist(SqlServerPlaylistRepository())
+        exists_usecase = exists_playlist.ExistsPlaylist(SqlServerPlaylistRepository())
+        dtoclass = update_playlist.UpdatePlaylistInputDto(
+            idPlaylist,
+            request.json["title"],
+            request.json["cover"],
+            request.json["publicPlaylist"],
+            request.json["idAccount"],
+        )
+        try:
+            if exists_usecase.execute(dtoclass.idPlaylist):
+                if update_usecase.execute(dtoclass):
+                    return {}, 200
+        except PlaylistNotExistException as ex:
+            return {"error": str(ex)}, 404
+        except PlaylistInvalidException as ex:
             return {"error": str(ex)}, 404
         except DataBaseException as ex:
             return {"error": str(ex)}, 500

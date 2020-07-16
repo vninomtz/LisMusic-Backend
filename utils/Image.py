@@ -2,6 +2,7 @@ import sys
 sys.path.append("")
 import base64
 import config
+import datetime
 
 class Image:
     @classmethod
@@ -15,6 +16,13 @@ class Image:
             return True
         else: 
             return False
+
+    @classmethod
+    def generate_name(cls, title:str):
+        newTitle = title.replace(" ", "")
+        date = datetime.date.today()
+        return "{0}_{1}.{2}".format(str(date), newTitle, "png")
+        
         
 
 
@@ -25,4 +33,6 @@ class Image:
             return config.ALBUMS_DIR
         if typeImage == 'Artist':
             return config.ARTISTS_DIR
+        if typeImage == 'Account':
+            return config.ACCOUNT_DIR
         

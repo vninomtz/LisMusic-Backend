@@ -2,6 +2,7 @@ from accounts.accounts.application.repositories.repositorie_account import Accou
 from accounts.accounts.domain.account import Account
 from accounts.accounts.domain.exceptions import EmailAlreadyExistException, UserNameAlreadyExistException, DataBaseException
 from dataclasses import dataclass
+from utils.Image import Image
 
 @dataclass
 class CreateAccountInputDto:
@@ -30,6 +31,13 @@ class CreateAccount:
 
         if self.repository.exist_userName(newAccount.userName):
             raise UserNameAlreadyExistException("User name already exist")
+
+        if inputAccount.cover:
+            nameCover = Image.generate_name(inputAccount.userName)
+            if Image.Image.save_image(inputAccount.cover, nameCover, "Account"):
+                inputAccount.cover = nameCover
+            else:
+                inputPlaylist.cover = "defaultAccountCover.jpeg"
 
         try:
             account = self.repository.save(newAccount)

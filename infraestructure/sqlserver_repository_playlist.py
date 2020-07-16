@@ -38,7 +38,30 @@ class SqlServerPlaylistRepository(PlaylistRepository):
 
     
     def update(self, playlist: Playlist):
-        pass
+        try:
+            self.connection.open()
+            sql = """\
+                DECLARE	@return_value int,
+                        @salida nvarchar(1000),
+                        @estado int
+
+                EXEC	@return_value = [dbo].[SPU_UpdatePlaylist]
+                        @idPlaylist = ?,
+                        @title = ?,
+                        @cover = ?,
+                        @publicPlaylist = ?,
+                        @salida = @salida OUTPUT,
+                        @estado = @estado OUTPUT
+            """
+            params = (playlist.idPlaylist, playlist.title,playlist.cover, playlist.publicPlaylist)
+            self.connection.cursor.execute(sql, params)
+            if self.connection.cursor.rowcount > 0:
+                self.connection.save()
+                return True
+        except Exception as ex:
+            raise DataBaseException(ex)
+        finally:
+            self.connection.close()
 
     
     def delete(self, playlistId: int):
