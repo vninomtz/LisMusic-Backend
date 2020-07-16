@@ -9,3 +9,6 @@ class EmptyFieldsException(Exception):
 
 class PlaylistInvalidException(Exception):
     pass
+
+class PlaylistNotExistException(Exception):
+    pass

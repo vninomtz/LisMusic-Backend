@@ -22,4 +22,15 @@ class PlaylistRepository(abc.ABC):
     def get_playlist_of_account(self, idAccount:str):
         pass
 
+    @abc.abstractmethod
+    def add_track(self, idPlaylist:int, idTrack:str):
+        pass
+
+    @abc.abstractmethod
+    def remove_track(self, idPlaylist:int, idTrack:str):
+        pass
+
+    @abc.abstractmethod
+    def exists_track(self, idPlaylist:int, idTrack:str):
+        pass
     
