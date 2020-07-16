@@ -2,7 +2,7 @@ from tracks.tracks.application.repositories.repositorie_track import TrackReposi
 from albums.albums.domain.album import Album
 from tracks.tracks.domain.track import Track
 from tracks.tracks.domain.exceptions import TrackInvalidException, DataBaseException
-
+from dataclasses import dataclass
 @dataclass
 class CreateTrackInputDto:
     title:str = None

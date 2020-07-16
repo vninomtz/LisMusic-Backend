@@ -24,7 +24,6 @@ class Track:
 
     def addTrack_to_album(self, album:Album):
         self.album : Album = album
-        album.addTrack(self)
 
     def to_json(self):
         track_to_json = {

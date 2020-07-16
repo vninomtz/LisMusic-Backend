@@ -25,7 +25,7 @@ class SqlServerTrackRepository(TrackRepository):
                 @salida = @salida OUTPUT,
                 @estado = @estado OUTPUT
         """
-        params = (track.idTrack, track.title, track.duration, track.reproductions, track.avaible,
+        params = (track.idTrack, track.title, track.duration, track.reproductions, track.fileTrack, track.avaible,
                     track.album.idAlbum)
         self.connection.cursor.execute(sql,params)
         try:

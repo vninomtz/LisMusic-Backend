@@ -1,10 +1,13 @@
 from albums.albums.application.repositories.repository_album import AlbumRepository
 from albums.albums.domain.exceptions import AlbumGenderInvalidException, AlbumInvalidException, AlbumTypeInvalidException, DataBaseException, AlbumTracksInvalidException
+from tracks.tracks.application.use_cases import create_track
 from dataclasses import dataclass
 from albums.albums.domain.album import Album
 import datetime
 from tracks.tracks.domain.track import Track
 from artists.artists.application.use_cases import exists_artist
+import json
+from infraestructure.sqlserver_repository_track import SqlServerTrackRepository
 
 @dataclass
 class CreateAlbumInputDto:
@@ -15,7 +18,7 @@ class CreateAlbumInputDto:
     idMusicGender: int = None  
     idAlbumType: int = None
     idArtist: str = None 
-    tracks: str = None
+    tracks: json = None
 
 class CreateAlbum:
     def __init__(self, album_repository: AlbumRepository):
@@ -39,6 +42,16 @@ class CreateAlbum:
 
         new_album = Album.create(inputAlbum.title, inputAlbum.cover, inputAlbum.publication,
         inputAlbum.recordCompany,inputAlbum.idMusicGender, inputAlbum.idAlbumType,inputAlbum.idArtist)
+
+        use_case_create_track = create_track.CreateTrack(SqlServerTrackRepository())
+        for track in inputAlbum.tracks:
+            dtoclass = create_track.CreateTrackInputDto(
+                track["title"],
+                track["duration"],
+                track["fileTrack"],
+                album = new_album
+            )
+            use_case_create_track.execute(dtoclass)
 
         try:
             self.album_repository.save(new_album)

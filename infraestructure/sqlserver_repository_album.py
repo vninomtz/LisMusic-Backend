@@ -35,8 +35,7 @@ class SqlServerAlbumRepository(AlbumRepository):
         """
        
         params = (album.idAlbum,album.title,album.cover,album.publication,album.recordCompany,
-                album.idMusicGender,album.idAlbumType,album.idArtist)
-        print(album.idMusicGender)
+                album.idMusicGender,album.idAlbumType,album.artist.idArtist)
         self.connection.cursor.execute(sql,params)
 
         try:
