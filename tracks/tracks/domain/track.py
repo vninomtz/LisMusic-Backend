@@ -50,3 +50,18 @@ class Track:
             "artist_uri": 'http://10.0.2.2:6000/artist/{}'.format(self.album.artist.idArtist)
         }
         return track_to_json;
+
+
+    def to_json_for_search(self):
+        track_to_json = {
+            "idTrack": self.idTrack,
+            "title": self.title,
+            "duration": self.duration,
+            "reproductions": self.reproductions,
+            "fileTrack": self.fileTrack,
+            "avaible": self.avaible,
+            "cover:": self.album.cover,
+            "albumTitle": self.album.title,
+            "artistName": self.album.artist.name
+        }
+        return track_to_json;

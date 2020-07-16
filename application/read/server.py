@@ -1,10 +1,10 @@
 import sys
 sys.path.append("../../")
-from application.read.handlers.playlist_handler import PlaylistAccountHandler, PlaylistTracksHandler
-from application.read.handlers.album_handler import AlbumsLikeOfAccountHandler, AlbumsOfArtistHandler, TracksOfAlbumHandler
+from application.read.handlers.playlist_handler import PlaylistAccountHandler, PlaylistTracksHandler, SearchPlaylistHandler
+from application.read.handlers.album_handler import AlbumsLikeOfAccountHandler, AlbumsOfArtistHandler, SearchAlbumHandler, TracksOfAlbumHandler
 from application.read.handlers.media_handler import MediaAlbumsHandler, MediaArtistsHandler, MediaHandler, MediaPlaylistsHandler
-from application.read.handlers.artist_handler import ArtistsLikeOfAccountHandler
-from application.read.handlers.track_handler import TrackHandler
+from application.read.handlers.artist_handler import ArtistsLikeOfAccountHandler, SearchArtistHandler
+from application.read.handlers.track_handler import SearchTrackHandler, TrackHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 
@@ -23,6 +23,10 @@ api.add_resource(MediaPlaylistsHandler, '/media/playlists/<string:nameFile>')
 api.add_resource(MediaArtistsHandler, '/media/artists/<string:fileName>')
 api.add_resource(ArtistsLikeOfAccountHandler, '/account/<string:idAccount>/artistsLike')
 api.add_resource(TrackHandler, '/track/<string:idTrack>')
+api.add_resource(SearchArtistHandler, '/artists/<string:queryCriterion>')
+api.add_resource(SearchAlbumHandler, '/albums/<string:queryCriterion>')
+api.add_resource(SearchTrackHandler, '/tracks/<string:queryCriterion>')
+api.add_resource(SearchPlaylistHandler, '/playlists/<string:queryCriterion>')
 
 
 if __name__ == "__main__":

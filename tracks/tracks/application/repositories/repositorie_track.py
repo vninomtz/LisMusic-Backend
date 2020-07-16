@@ -26,5 +26,9 @@ class TrackRepository(abc.ABC):
     def get_track(self, idTrack:str):
         pass
 
+    @abc.abstractmethod
+    def search_tracks(self, queryCriterion:str):
+        pass
+
 
 

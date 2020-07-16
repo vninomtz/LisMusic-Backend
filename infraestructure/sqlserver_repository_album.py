@@ -217,3 +217,23 @@ class SqlServerAlbumRepository(AlbumRepository):
 
     def delete(self, idAlbum: str):
         pass
+
+    def search_albums(self, queryCriterion):
+        self.connection.open()
+        sql = """\
+
+         EXEC   [dbo].[SPS_SearchAlbums]
+                @queryCriterion = ?
+        """
+        self.connection.cursor.execute(sql,queryCriterion)
+        rows = self.connection.cursor.fetchall()
+        if self.connection.cursor.rowcount != 0:
+            list_albums = []
+            for row in rows:
+                album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication.strftime('%Y-%m-%d'), row.RecordCompany,
+                            None, row.IdAlbumType, None,row.GenderName)
+                album.artist.name = row.ArtistName
+                list_albums.append(album)
+            return list_albums
+            
+        return False

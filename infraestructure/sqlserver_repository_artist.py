@@ -141,3 +141,25 @@ class SqlServerArtistRepository(ArtistRepository):
                 list_artists.append(artist)
 
             return list_artists
+
+    def search_artists(self, queryCriterion):
+            self.connection.open()
+            sql = """     
+            SELECT	* FROM Artists WHERE Name Like ? + '%'
+            """
+            
+            self.connection.cursor.execute(sql,queryCriterion)
+            rows = self.connection.cursor.fetchall()
+            if self.connection.cursor.rowcount != 0:
+                list_artists = []
+                for row in rows:
+                    artist = Artist(row.IdArtist,row.Name,row.Cover,row.RegisterDate, row.Description)
+                    list_artists.append(artist)
+                return list_artists
+            
+            return False
+
+		
+          
+
+		

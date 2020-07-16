@@ -26,6 +26,9 @@ class ArtistRepository(abc.ABC):
     def get_artists_like_of_account(self, idAccount: str):
         pass
 
+    @abc.abstractmethod
+    def search_artists(self, queryCriterion):
+        pass
     
 
     

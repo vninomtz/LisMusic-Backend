@@ -33,4 +33,8 @@ class PlaylistRepository(abc.ABC):
     @abc.abstractmethod
     def exists_track(self, idPlaylist:int, idTrack:str):
         pass
+
+    @abc.abstractmethod
+    def search_playlists(self, queryCriterion:str):
+        pass
     

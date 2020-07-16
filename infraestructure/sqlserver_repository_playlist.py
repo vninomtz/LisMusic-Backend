@@ -198,3 +198,24 @@ class SqlServerPlaylistRepository(PlaylistRepository):
             raise DataBaseException(ex)
         finally:
             self.connection.close()
+
+    def search_playlists(self, queryCriterion):
+            self.connection.open()
+            sql = """\
+
+            EXEC   [dbo].[SPS_SearchPlaylists]
+            @queryCriterion = ?
+            """
+            self.connection.cursor.execute(sql,queryCriterion)
+            rows = self.connection.cursor.fetchall()
+            if self.connection.cursor.rowcount != 0:
+                list_playlists = []
+                for row in rows:
+                    playlist = Playlist(row.IdPlaylist, row.Title,row.Creation,row.Cover,row.PublicPlaylist,
+                    row.IdPlaylistType)
+                    playlist.account.idAccount = row.IdAccount
+                    playlist.account.userName = row.UserName
+                    list_playlists.append(playlist)
+                return list_playlists
+            
+            return False

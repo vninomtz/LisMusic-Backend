@@ -39,6 +39,13 @@ class AlbumRepository(abc.ABC):
     def delete(self, idAlbum: str):
         pass
 
+    @abc.abstractmethod
+    def search_albums(self, queryCriterion: str):
+        pass
+
+
+
+
 
 
     

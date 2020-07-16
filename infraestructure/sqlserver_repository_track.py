@@ -108,4 +108,27 @@ class SqlServerTrackRepository(TrackRepository):
             raise DataBaseException("Data base connection error")
         finally:
             self.connection.close()
+
+    def search_tracks(self, queryCriterion:str):
+            self.connection.open()
+            sql = """\
+
+            EXEC   [dbo].[SPS_SearchTracks]
+                    @queryCriterion = ?
+            """
+            self.connection.cursor.execute(sql, queryCriterion)
+            rows = self.connection.cursor.fetchall()
+            listTracks = []
+            if self.connection.cursor.rowcount != 0:
+                for row in rows:
+                    print(row)
+                    track = Track(row.IdTrack,row.Title,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
+                    track.album.idAlbum = row.IdAlbum
+                    track.album.title = row.AlbumTitle
+                    track.album.cover = row.Cover
+                    track.album.artist.name = row.ArtistName 
+                    listTracks.append(track)
+                return listTracks        
+            return False
+
    

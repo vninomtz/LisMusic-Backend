@@ -24,7 +24,7 @@ enum Quality{
 }
 
 struct TrackRequest{
-    1: string      fileName
+    1: string   fileName
     2: Quality  quality
 }
 

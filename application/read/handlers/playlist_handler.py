@@ -1,6 +1,6 @@
 #Playlist imports
 from playlists.playlists.application.use_cases.get_playlist_of_account import GetPlaylistForAccount
-from playlists.playlists.domain.exceptions import DataBaseException,EmptyFieldsException
+from playlists.playlists.domain.exceptions import DataBaseException, EmptyFieldsException, PlaylistInvalidException, PlaylistNotExistException
 from infraestructure.sqlserver_repository_playlist import SqlServerPlaylistRepository
 #Account imports
 from infraestructure.sqlserver_repository_account import SqlServerAccountRepository
@@ -14,6 +14,7 @@ from flask_restful import Resource, abort
 from flask import jsonify
 
 from application.writer.handlers.login_handler import authorization_token
+from playlists.playlists.application.use_cases import search_playlist
 
 class PlaylistAccountHandler(Resource):
     @authorization_token
@@ -56,5 +57,19 @@ class PlaylistTracksHandler(Resource):
             response = jsonify({'error': error})
             response.status_code = 500
             return response
+
+class SearchPlaylistHandler(Resource):
+    def get(self, queryCriterion):
+        try:
+            usecase = search_playlist.SearchPlaylist(SqlServerPlaylistRepository())
+            list_playlists = usecase.execute(queryCriterion)
+            return [ob.to_json() for ob in list_playlists], 200
+        except PlaylistInvalidException as ex:
+            return {"error": str(ex)}, 400
+        except PlaylistNotExistException as ex:
+            return {"error": str(ex)}, 400
+        except Exception as ex:
+            return {"error": str(ex)}, 500
+
         
         
