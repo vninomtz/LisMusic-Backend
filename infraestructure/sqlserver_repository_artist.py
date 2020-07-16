@@ -7,28 +7,29 @@ class SqlServerArtistRepository(ArtistRepository):
         self.connection = ConnectionSQL()
 
     def save(self, artist: Artist):
-        self.connection.open()
-        sql = """
-                DECLARE	@return_value int,
-                @salida nvarchar(1000),
-                @estado int
-
-        EXEC	@return_value = [dbo].[SPI_CreateArtist]
-                @IdArtist = ?,
-                @Name = ?,
-                @Cover = ?,
-                @RegisterDate = ?,
-                @Description = ?,
-                @salida = @salida OUTPUT,
-                @estado = @estado OUTPUT
-
-        SELECT	@salida as N'@salida',
-                @estado as N'@estado'
-        """
-        params = (artist.idArtist,artist.name,artist.cover,artist.registerDate,artist.description)
-        self.connection.cursor.execute(sql,params)
-
         try:
+            self.connection.open()
+            sql = """
+                    DECLARE	@return_value int,
+                    @salida nvarchar(1000),
+                    @estado int
+
+            EXEC	@return_value = [dbo].[SPI_CreateArtist]
+                    @IdArtist = ?,
+                    @Name = ?,
+                    @Cover = ?,
+                    @RegisterDate = ?,
+                    @Description = ?,
+                    @IdAccount = ?,
+                    @salida = @salida OUTPUT,
+                    @estado = @estado OUTPUT
+
+            SELECT	@salida as N'@salida',
+                    @estado as N'@estado'
+            """
+            params = (artist.idArtist,artist.name,artist.cover,artist.registerDate,
+                        artist.description, artist.account.idAccount)
+            self.connection.cursor.execute(sql,params)
             self.connection.save()
             print(self.connection.cursor.rowcount, "Artist created")
             self.connection.close()

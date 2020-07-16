@@ -2,6 +2,7 @@ from artists.artists.application.repositories.repository_artist import ArtistRep
 from artists.artists.domain.exceptions import ArtistInvalidException, DataBaseException
 from dataclasses import dataclass
 from artists.artists.domain.artist import Artist
+from utils.Image import Image
 
 
 @dataclass
@@ -9,6 +10,7 @@ class CreateArtistInputDto:
     name: str = None
     cover: str = None
     description: str = None
+    idAccount: str = None
     
 
 class CreateArtist:
@@ -16,10 +18,14 @@ class CreateArtist:
         self.repository = repository
 
     def execute(self, inputArtist: CreateArtistInputDto):
-        if not inputArtist.name or not inputArtist.cover or not inputArtist.description:
+        if not inputArtist.name or not inputArtist.cover or not inputArtist.description or not inputArtist.idAccount:
             raise ArtistInvalidException("Empty fields.")
-
+        
         new_artist = Artist.create(inputArtist.name, inputArtist.cover, inputArtist.description)
+        new_artist.account.idAccount = inputArtist.idAccount
+        nameCover = self.generate_name(new_artist.name)
+        if Image.Image.save_image(new_artist.cover, nameCover, "Artist"):
+            new_artist.cover = nameCover
 
         try:
             self.repository.save(new_artist)

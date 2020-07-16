@@ -1,6 +1,7 @@
 from uuid import uuid4
 import datetime
 import hashlib
+from accounts.accounts.domain.account import Account
 
 class Artist:
     def __init__(self,idArtist=None,name=None,cover=None,registerDate=None,
@@ -10,6 +11,7 @@ class Artist:
         self.cover = cover
         self.registerDate = registerDate
         self.description = description
+        self.account:Account = Account()
 
     @classmethod
     def create(cls, name, cover, description):
