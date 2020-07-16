@@ -26,6 +26,21 @@ module StreamingService
       raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'GetTrackAudio failed: unknown result')
     end
 
+    def UploadTrack(trackAudio)
+      send_UploadTrack(trackAudio)
+      return recv_UploadTrack()
+    end
+
+    def send_UploadTrack(trackAudio)
+      send_message('UploadTrack', UploadTrack_args, :trackAudio => trackAudio)
+    end
+
+    def recv_UploadTrack()
+      result = receive_message(UploadTrack_result)
+      return result.success unless result.success.nil?
+      raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'UploadTrack failed: unknown result')
+    end
+
   end
 
   class Processor
@@ -36,6 +51,13 @@ module StreamingService
       result = GetTrackAudio_result.new()
       result.success = @handler.GetTrackAudio(args.trackRequest)
       write_result(result, oprot, 'GetTrackAudio', seqid)
+    end
+
+    def process_UploadTrack(seqid, iprot, oprot)
+      args = read_args(iprot, UploadTrack_args)
+      result = UploadTrack_result.new()
+      result.success = @handler.UploadTrack(args.trackAudio)
+      write_result(result, oprot, 'UploadTrack', seqid)
     end
 
   end
@@ -64,6 +86,38 @@ module StreamingService
 
     FIELDS = {
       SUCCESS => {:type => ::Thrift::Types::STRUCT, :name => 'success', :class => ::TrackAudio}
+    }
+
+    def struct_fields; FIELDS; end
+
+    def validate
+    end
+
+    ::Thrift::Struct.generate_accessors self
+  end
+
+  class UploadTrack_args
+    include ::Thrift::Struct, ::Thrift::Struct_Union
+    TRACKAUDIO = 1
+
+    FIELDS = {
+      TRACKAUDIO => {:type => ::Thrift::Types::STRUCT, :name => 'trackAudio', :class => ::TrackAudio}
+    }
+
+    def struct_fields; FIELDS; end
+
+    def validate
+    end
+
+    ::Thrift::Struct.generate_accessors self
+  end
+
+  class UploadTrack_result
+    include ::Thrift::Struct, ::Thrift::Struct_Union
+    SUCCESS = 0
+
+    FIELDS = {
+      SUCCESS => {:type => ::Thrift::Types::STRUCT, :name => 'success', :class => ::TrackUploaded}
     }
 
     def struct_fields; FIELDS; end

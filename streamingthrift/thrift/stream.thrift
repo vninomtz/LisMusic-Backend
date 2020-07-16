@@ -24,15 +24,21 @@ enum Quality{
 }
 
 struct TrackRequest{
-    1: i32      idTrack
+    1: string      fileName
     2: Quality  quality
 }
 
+struct TrackUploaded{
+    1: string   fileName
+}
+
 struct TrackAudio{
-    1: binary audio
+    1: string   trackName
+    2: binary   audio
 }
 
 service StreamingService {
     TrackAudio GetTrackAudio(1: TrackRequest trackRequest)
+    TrackUploaded UploadTrack(1: TrackAudio trackAudio)
 }
 

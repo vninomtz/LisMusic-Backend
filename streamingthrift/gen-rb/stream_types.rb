@@ -16,15 +16,17 @@ end
 
 class TrackRequest; end
 
+class TrackUploaded; end
+
 class TrackAudio; end
 
 class TrackRequest
   include ::Thrift::Struct, ::Thrift::Struct_Union
-  IDTRACK = 1
+  FILENAME = 1
   QUALITY = 2
 
   FIELDS = {
-    IDTRACK => {:type => ::Thrift::Types::I32, :name => 'idTrack'},
+    FILENAME => {:type => ::Thrift::Types::STRING, :name => 'fileName'},
     QUALITY => {:type => ::Thrift::Types::I32, :name => 'quality', :enum_class => ::Quality}
   }
 
@@ -39,11 +41,29 @@ class TrackRequest
   ::Thrift::Struct.generate_accessors self
 end
 
-class TrackAudio
+class TrackUploaded
   include ::Thrift::Struct, ::Thrift::Struct_Union
-  AUDIO = 1
+  FILENAME = 1
 
   FIELDS = {
+    FILENAME => {:type => ::Thrift::Types::STRING, :name => 'fileName'}
+  }
+
+  def struct_fields; FIELDS; end
+
+  def validate
+  end
+
+  ::Thrift::Struct.generate_accessors self
+end
+
+class TrackAudio
+  include ::Thrift::Struct, ::Thrift::Struct_Union
+  TRACKNAME = 1
+  AUDIO = 2
+
+  FIELDS = {
+    TRACKNAME => {:type => ::Thrift::Types::STRING, :name => 'trackName'},
     AUDIO => {:type => ::Thrift::Types::STRING, :name => 'audio', :binary => true}
   }
 
