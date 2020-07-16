@@ -34,7 +34,7 @@ class SqlServerArtistRepository(ArtistRepository):
             print(self.connection.cursor.rowcount, "Artist created")
             self.connection.close()
             return True
-        except DataBaseException as ex:
+        except Exception as ex:
             raise DataBaseException("Data base connection error")
 
     def update(self, artist: Artist):

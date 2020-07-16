@@ -1,4 +1,4 @@
-from tracks.tracks.application.repositories import repositorie_track
+from tracks.tracks.application.repositories.repositorie_track import TrackRepository
 from tracks.tracks.domain.exceptions import DataBaseException, TrackNotExistsException, TrackInvalidException
 from tracks.tracks.domain.track import Track
 from dataclasses import dataclass
@@ -16,7 +16,7 @@ class ExistsTrack:
             raise TrackInvalidException("Empty fields")
         
         try:
-            if not self.repository.exist_track(inputTrack.idTrack):
+            if not self.repository.exists_track(inputTrack.idTrack):
                 raise TrackNotExistsException("Track not exists")
         except DataBaseException as ex:
             raise DataBaseException(ex)

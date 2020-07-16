@@ -42,7 +42,37 @@ class SqlServerTrackRepository(TrackRepository):
             self.connection.close()
 
     def update(self, track: Track):
-        pass
+        self.connection.open()
+        sql = """
+        DECLARE	@return_value int,
+                @salida nvarchar(1000),
+                @estado int
+
+        EXEC	@return_value = [dbo].[SPU_UpdateTrack]
+                @idTrack = ?,
+                @title = ?,
+                @duration = ?,
+                @reproductions = ?,
+                @fileTrack = ?,
+                @avaible = ?,
+                @idAlbum = ?,
+                @salida = @salida OUTPUT,
+                @estado = @estado OUTPUT
+        """        
+        params = (track.idTrack, track.title, track.duration, track.reproductions, track.fileTrack, track.avaible,
+                    track.album.idAlbum)
+        print(params)            
+        try:
+            self.connection.cursor.execute(sql, params)
+
+            self.connection.save()
+            print(self.connection.cursor.rowcount, " Track updated")
+            self.connection.close()
+        
+            return True
+        except Exception as ex:
+            
+            raise ex        
 
     def delete(self, idTrack: str):
         pass
