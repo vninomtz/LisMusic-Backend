@@ -4,8 +4,8 @@ from accounts.accounts.domain.exceptions import DataBaseException
 
 class ConnectionSQL:
     def __init__(self):
-        self.connection = None
-        self.cursor = None
+        self.connection:pyodbc.Connection = None
+        self.cursor:pyodbc.Cursor = None
         self.server = DATABASE_SERVER_IP
         self.database = DATABASE_NAME
         self.username = DATABASE_USERNAME
@@ -16,8 +16,8 @@ class ConnectionSQL:
 
     def open(self):
         try:
-            self.connection = pyodbc.connect(self.connectionString)
-            self.cursor = self.connection.cursor()
+            self.connection:pyodbc.Connection = pyodbc.connect(self.connectionString)
+            self.cursor:pyodbc.Cursor = self.connection.cursor()
         except Exception as ex:
             raise DataBaseException(ex)
         
