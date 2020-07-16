@@ -8,6 +8,7 @@ from tracks.tracks.domain.track import Track
 from artists.artists.application.use_cases import exists_artist
 import json
 from infraestructure.sqlserver_repository_track import SqlServerTrackRepository
+from utils.Image import Image
 
 @dataclass
 class CreateAlbumInputDto:
@@ -39,6 +40,13 @@ class CreateAlbum:
 
         if not inputAlbum.tracks:
             raise AlbumTracksInvalidException("Album tracks not found")
+
+        if inputAlbum.cover:
+            nameCover = self.generate_name(inputAlbum.title)
+            if Image.Image.save_image(inputAlbum.cover, nameCover, "Album"):
+                inputAlbum.cover = nameCover
+        else:
+            inputAlbum.cover = "defaultAlbumCover.jpeg"
 
         new_album = Album.create(inputAlbum.title, inputAlbum.cover, inputAlbum.publication,
         inputAlbum.recordCompany,inputAlbum.idMusicGender, inputAlbum.idAlbumType,inputAlbum.idArtist)

@@ -3,6 +3,7 @@ from albums.albums.domain.album import Album
 from albums.albums.domain.exceptions import DataBaseException, AlbumNotExistsException, AlbumInvalidException
 from dataclasses import dataclass
 import datetime
+from utils.Image import Image
 @dataclass
 class UpdateAlbumInputDto:
     idAlbum: str = None
@@ -25,6 +26,13 @@ class UpdateAlbum:
 
         if not self.repository.exist_album(inputAlbum.idAlbum):
             raise AlbumNotExistsException("Album not exists")
+        
+        if inputAlbum.cover:
+            nameCover = self.generate_name(inputAlbum.idAlbum)
+            if Image.Image.save_image(inputAlbum.cover, nameCover, "Album"):
+                inputAlbum.cover = nameCover
+        else:
+            inputAlbum.cover = None
 
         album = Album(inputAlbum.idAlbum, inputAlbum.title, inputAlbum.cover, inputAlbum.publication, 
                     inputAlbum.description, inputAlbum.idMusicGender,inputAlbum.idAlbumType,inputAlbum.tracks) 
