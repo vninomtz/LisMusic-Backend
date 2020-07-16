@@ -26,14 +26,15 @@ class SqlServerArtistRepository(ArtistRepository):
                 @estado as N'@estado'
         """
         params = (artist.idArtist,artist.name,artist.cover,artist.registerDate,artist.description)
-        self.connection.cursor.execute(sql,params)
+        
 
         try:
+            self.connection.cursor.execute(sql,params)
             self.connection.save()
             print(self.connection.cursor.rowcount, "Artist created")
             self.connection.close()
             return True
-        except DataBaseException as ex:
+        except Exception as ex:
             raise DataBaseException("Data base connection error")
 
     def update(self, artist: Artist):

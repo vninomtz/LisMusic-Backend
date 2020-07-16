@@ -10,6 +10,7 @@ from application.writer.handlers.playlist_handler import PlaylistHandler
 from application.writer.handlers.playlist_tracks_handler import PlaylistTracksHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
+from application.writer.handlers.track_handler import TrackHandler
 #from flask_jwt_extended import JWTManager, jwt_required
 #import jwt
 
@@ -21,6 +22,7 @@ api = Api(app)
 api.add_resource(AccountHandler, '/account')
 api.add_resource(ArtistHandler, '/artist')
 api.add_resource(AlbumHandler, '/album')
+api.add_resource(TrackHandler, '/track')
 
 api.add_resource(LoginHandler, '/login')
 api.add_resource(PlaylistHandler, '/playlist', '/playlist/<int:idPlaylist>')
