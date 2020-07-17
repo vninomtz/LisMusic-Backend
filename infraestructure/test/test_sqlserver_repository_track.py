@@ -9,8 +9,8 @@ import unittest
 
 class TestTrackRepository(unittest.TestCase):
     def setUp(self):
-        repo = SqlServerTrackRepository()
-        self.listTracks:Track = repo.get_tracks_of_playlist(11)
+        self.repo = SqlServerTrackRepository()
+        self.listTracks:Track = self.repo.get_tracks_of_playlist(11)
 
     def test_get_tracks_of_playlist(self):
         self.assertIsNotNone(self.listTracks)
@@ -23,6 +23,10 @@ class TestTrackRepository(unittest.TestCase):
     
     def test_get_tracks_of_playlist_instance_artist(self):
         self.assertIsInstance(self.listTracks[0].album.artist, Artist)
+
+    def test_get_tracks_radio_gender(self):
+        listTracks:Track = self.repo.get_tracks_radio_gender(14)
+        self.assertIsNotNone(listTracks)
     
 
 

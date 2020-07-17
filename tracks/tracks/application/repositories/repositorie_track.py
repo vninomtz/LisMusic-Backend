@@ -30,5 +30,8 @@ class TrackRepository(abc.ABC):
     def search_tracks(self, queryCriterion:str):
         pass
 
+    @abc.abstractmethod
+    def get_tracks_radio_gender(self, idMusicGender:int):
+        pass
 
 

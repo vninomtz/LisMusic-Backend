@@ -1,9 +1,9 @@
 from tracks.tracks.application.use_cases.get_track import GetTrack
 from infraestructure.sqlserver_repository_track import SqlServerTrackRepository
-from tracks.tracks.domain.exceptions import DataBaseException,TrackInvalidException,TrackNotExistsException
+from tracks.tracks.domain.exceptions import DataBaseException,TrackInvalidException,TrackNotExistsException, InvalidParamsException
 from flask_restful import Resource
 from flask import jsonify
-from tracks.tracks.application.use_cases import search_tracks
+from tracks.tracks.application.use_cases import search_tracks, get_tracks_radio_gender
 
 
 class TrackHandler(Resource):
@@ -37,6 +37,18 @@ class SearchTrackHandler(Resource):
         except TrackInvalidException as ex:
             return {"error": str(ex)}, 400
         except TrackNotExistsException as ex:
+            return {"error": str(ex)}, 400
+        except Exception as ex:
+            return {"error": str(ex)}, 500
+
+
+class TracksRadioHandler(Resource):
+    def get(self, idMusicGender):
+        try:
+            usecase = get_tracks_radio_gender.GetTracksRadioGender(SqlServerTrackRepository())
+            list_tracks = usecase.execute(idMusicGender)
+            return [ob.to_json_for_radio() for ob in list_tracks], 200
+        except InvalidParamsException as ex:
             return {"error": str(ex)}, 400
         except Exception as ex:
             return {"error": str(ex)}, 500

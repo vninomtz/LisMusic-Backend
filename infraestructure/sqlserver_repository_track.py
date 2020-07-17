@@ -161,4 +161,38 @@ class SqlServerTrackRepository(TrackRepository):
                 return listTracks        
             return False
 
+
+    def get_tracks_radio_gender(self, idMusicGender:int):
+        try:
+            self.connection.open()
+            sql = """\
+                DECLARE	@return_value int
+
+                EXEC	@return_value = [dbo].[SPS_GetRadioByGender]
+                        @IdMusicGender = ?
+                """
+            self.connection.cursor.execute(sql, idMusicGender)
+            rows = self.connection.cursor.fetchall()
+            listTracks = []
+            if self.connection.cursor.rowcount != 0:
+                for row in rows:
+                    track = Track(row.IdTrack,row.TrackTitle,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
+                    track.album.idAlbum = row.IdAlbum
+                    track.album.title = row.AlbumTitle
+                    track.album.cover = row.AlbumCover
+                    track.album.publication = row.Publication
+                    track.album.recordCompany = row.RecordCompany
+                    track.album.artist.idArtist = row.IdArtist
+                    track.album.artist.name = row.ArtistName
+                    track.album.artist.cover = row.ArtistCover
+                    track.album.artist.description = row.Description
+                    listTracks.append(track)
+                
+
+            return listTracks
+        except Exception as ex:
+            raise DataBaseException("Database connection error")
+        finally:
+            self.connection.close()
+
    

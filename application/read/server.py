@@ -4,7 +4,7 @@ from application.read.handlers.playlist_handler import PlaylistAccountHandler, P
 from application.read.handlers.album_handler import AlbumsLikeOfAccountHandler, AlbumsOfArtistHandler, SearchAlbumHandler, TracksOfAlbumHandler
 from application.read.handlers.media_handler import MediaAlbumsHandler, MediaArtistsHandler, MediaHandler, MediaPlaylistsHandler
 from application.read.handlers.artist_handler import ArtistsLikeOfAccountHandler, SearchArtistHandler
-from application.read.handlers.track_handler import SearchTrackHandler, TrackHandler
+from application.read.handlers.track_handler import SearchTrackHandler, TrackHandler, TracksRadioHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 
@@ -27,6 +27,7 @@ api.add_resource(SearchArtistHandler, '/artists/<string:queryCriterion>')
 api.add_resource(SearchAlbumHandler, '/albums/<string:queryCriterion>')
 api.add_resource(SearchTrackHandler, '/tracks/<string:queryCriterion>')
 api.add_resource(SearchPlaylistHandler, '/playlists/<string:queryCriterion>')
+api.add_resource(TracksRadioHandler, "/radio/gender/<int:idMusicGender>")
 
 
 if __name__ == "__main__":
