@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../../")
-from tracks.tracks.application.use_cases import update_track
+from tracks.tracks.application.use_cases import update_track, add_track_played
 from flask import Flask, request
 from flask_restful import Resource
 from infraestructure.sqlserver_repository_track import SqlServerTrackRepository
@@ -31,5 +31,25 @@ class TrackHandler(Resource):
             return {"error": str(ex)}, 404
         except Exception as ex:
             return {"error": str(ex)}, 500
+
+
+class TrackPlayedHandler(Resource):
+    def post(self): 
+        print("Adding play to track")
+        idtrack = request.json["idTrack"]
+        idAccount = request.json["idAccount"]
+
+        use_case = add_track_played.AddTrackPlayed(SqlServerTrackRepository())
+        try:
+            use_case.execute(idtrack,idAccount)
+        except TrackInvalidException as ex:
+            return {"error": str(ex)}, 400
+        except TrackNotExistsException as ex:
+            return {"error": str(ex)}, 404
+        except Exception as ex:
+            return {"error": str(ex)}, 500
+
+
+
             
         

@@ -196,3 +196,31 @@ class SqlServerTrackRepository(TrackRepository):
             self.connection.close()
 
    
+    def add_track_played(self, idTrack, reproductionDate, idAccount):
+        self.connection.open()
+        sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC	@return_value = [dbo].[SPI_AddTrackToHistory]
+                    @reproductionDate = ?,
+                    @idAccount = ?,
+                    @idTrack = ?,                    
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+            """
+
+        try:
+            params = (reproductionDate,idAccount,idTrack)
+            print(params)
+            self.connection.cursor.execute(sql, params)
+            self.connection.save()
+            self.connection.close()
+            return True
+        except Exception as ex:
+            print(ex)
+            raise ex

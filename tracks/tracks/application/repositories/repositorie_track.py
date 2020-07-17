@@ -27,7 +27,7 @@ class TrackRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def search_tracks(self, queryCriterion:str):
+    def add_track_played(self, idTrack:str, reproductionDate:str, idAccount:str):
         pass
 
     @abc.abstractmethod
