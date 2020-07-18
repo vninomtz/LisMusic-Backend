@@ -10,12 +10,13 @@ client = StreamingService::Client.new(protocol)
 transport.open()
 
 #Get track audio test
-track_audio = client.GetTrackAudio(TrackRequest.new(fileName: 'track1', quality: nil))
+# track_audio = client.GetTrackAudio(TrackRequest.new(fileName: 'track1', quality: nil))
 
-File.open('../streaming/media/track3.mp3', 'w') do |destin_file|
-         destin_file.write track_audio.audio 
-end
+# File.open('../streaming/media/track3.mp3', 'w') do |destin_file|
+#          destin_file.write track_audio.audio 
+# end
 audio = ''
+
 
 #Upload service test
 File.open "../streaming/media/track1.mp3", "r" do |source_file|
