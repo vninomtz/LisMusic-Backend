@@ -34,4 +34,8 @@ class TrackRepository(abc.ABC):
     def get_tracks_radio_gender(self, idMusicGender:int):
         pass
 
+    @abc.abstractmethod
+    def get_tracks_account_history(self, idAccount:str):
+        pass
+
 

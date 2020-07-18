@@ -222,5 +222,41 @@ class SqlServerTrackRepository(TrackRepository):
             self.connection.close()
             return True
         except Exception as ex:
-            print(ex)
             raise ex
+
+    def get_tracks_account_history(self, idAccount):
+        self.connection.open()
+        sql = """\
+            DECLARE	@return_value int,
+                    @estado int,
+                    @salida nvarchar(1000)
+
+            EXEC	@return_value = [dbo].[SPS_GetTracksHistoryAccount]
+                    @idAccount = ?,                  
+                    @estado = @estado OUTPUT,
+                    @salida = @salida OUTPUT
+
+            SELECT	@estado as N'@estado',
+                    @salida as N'@salida'
+            """
+
+        try:
+            self.connection.cursor.execute(sql, idAccount)
+            rows = self.connection.cursor.fetchall()
+            list_tracks = []
+
+            if self.connection.cursor.rowcount != 0:
+                for row in rows:
+                    print(row)
+                    track = Track(row.IdTrack,row.Title,None,row.Reproductions,row.FileTrack,row.Avaible)
+                    track.album.title = row.AlbumTitle
+                    track.album.cover = row.Cover
+                    track.album.artist.name = row.ArtistName 
+                    list_tracks.append(track)
+                return list_tracks      
+
+        except Exception as ex:
+            print(ex)
+            raise DataBaseException("Database connection error")
+        finally:
+            self.connection.close();

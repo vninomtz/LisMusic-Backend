@@ -3,7 +3,7 @@ from infraestructure.sqlserver_repository_track import SqlServerTrackRepository
 from tracks.tracks.domain.exceptions import DataBaseException,TrackInvalidException,TrackNotExistsException, InvalidParamsException
 from flask_restful import Resource
 from flask import jsonify
-from tracks.tracks.application.use_cases import search_tracks, get_tracks_radio_gender
+from tracks.tracks.application.use_cases import search_tracks, get_tracks_radio_gender, get_tracks_history_account
 
 
 class TrackHandler(Resource):
@@ -32,8 +32,8 @@ class SearchTrackHandler(Resource):
     def get(self, queryCriterion):
         try:
             usecase = search_tracks.SearchTrack(SqlServerTrackRepository())
-            list_artists = usecase.execute(queryCriterion)
-            return [ob.to_json_for_search() for ob in list_artists], 200
+            list_tracks = usecase.execute(queryCriterion)
+            return [ob.to_json_for_search() for ob in list_tracks], 200
         except TrackInvalidException as ex:
             return {"error": str(ex)}, 400
         except TrackNotExistsException as ex:
@@ -53,6 +53,13 @@ class TracksRadioHandler(Resource):
         except Exception as ex:
             return {"error": str(ex)}, 500
 
-
-
-
+class TracksHistoryAccount(Resource):
+    def get(self, idAccount):
+        try:
+            use_case = get_tracks_history_account.GetTracksHistoryAccount(SqlServerTrackRepository()) 
+            list_tracks = use_case.execute(idAccount);
+            return [ob.to_json_for_search() for ob in list_tracks], 200
+        except InvalidParamsException as ex:
+            return {"error": str(ex)}, 400
+        except Exception as ex:
+            return {"error": str(ex)}, 500
