@@ -59,10 +59,12 @@ end
 
 class TrackAudio
   include ::Thrift::Struct, ::Thrift::Struct_Union
-  TRACKNAME = 1
-  AUDIO = 2
+  IDTRACK = 1
+  TRACKNAME = 2
+  AUDIO = 3
 
   FIELDS = {
+    IDTRACK => {:type => ::Thrift::Types::STRING, :name => 'idTrack'},
     TRACKNAME => {:type => ::Thrift::Types::STRING, :name => 'trackName'},
     AUDIO => {:type => ::Thrift::Types::STRING, :name => 'audio', :binary => true}
   }
