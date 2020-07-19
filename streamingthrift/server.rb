@@ -59,6 +59,38 @@ class StreamingServiceHander
         save_filename_track(trackAudio.idTrack, fileName) 
         return track_uploaded
     end
+
+    def update_personal_track(idtrack, filename)
+        begin     
+            RestClient::Request.execute(
+                method: :put,
+                url: URL,
+                payload: {"idTrack": id_track,
+                        "title": nil,
+                        "duration": get_length_track(filename),
+                        "reproductions": nil,
+                        "fileTrack": filename,
+                        "available": 1,
+                        "idAlbum": nil}.to_json,
+                headers: {"Content-Type" => "application/json",
+                        "Authorization" => AUTH_TOKEN }
+               )
+            return true
+        rescue => exception
+            print exception
+            return false 
+        end  
+    end
+
+
+    def UploadPersonalTrack(trackAudio)
+        filename = trackAudio.trackName() + SecureRandom.hex(5)
+        File.open("../streaming/media/#{filename}.mp3", 'wb') do |destin_file|
+            destin_file.write trackAudio.audio
+        end
+        update_personal_track(trackAudio.idTrack, filename)
+    end
+
 end
 
 handler = StreamingServiceHander.new()
