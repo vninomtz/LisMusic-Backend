@@ -1,10 +1,10 @@
 import sys
 sys.path.append("../../")
 from application.read.handlers.playlist_handler import PlaylistAccountHandler, PlaylistTracksHandler, SearchPlaylistHandler
-from application.read.handlers.album_handler import AlbumsLikeOfAccountHandler, AlbumsOfArtistHandler, SearchAlbumHandler, TracksOfAlbumHandler
+from application.read.handlers.album_handler import AlbumsLikeOfAccountHandler, AlbumsOfArtistHandler, SearchAlbumHandler
 from application.read.handlers.media_handler import MediaAlbumsHandler, MediaArtistsHandler, MediaHandler, MediaPlaylistsHandler
 from application.read.handlers.artist_handler import ArtistsLikeOfAccountHandler, SearchArtistHandler
-from application.read.handlers.track_handler import SearchTrackHandler, TrackHandler, TracksRadioHandler, TracksHistoryAccount
+from application.read.handlers.track_handler import SearchTrackHandler, TrackHandler, TracksRadioHandler, TracksHistoryAccount, TracksOfAlbumHandler
 from application.read.handlers.personal_tracks_handler import PersonalTracksAccountHandler
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api

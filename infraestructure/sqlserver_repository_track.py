@@ -284,4 +284,51 @@ class SqlServerTrackRepository(TrackRepository):
             print(ex)
             raise DataBaseException("Database connection error")
         finally:
-            self.connection.close();
+            self.connection.close()
+
+        
+    def get_tracks_of_album(self, idAlbum:str):
+        self.connection.open()
+        sql = """\
+        DECLARE	@return_value int,
+                @estado int,
+                @salida nvarchar(1000)
+
+        EXEC    @return_value = [dbo].[SPS_GetTracksOfAlbum]
+                @idAlbum = ?,
+                @estado = @estado OUTPUT,
+                @salida = @salida OUTPUT
+
+        SELECT	@estado as N'@estado',
+                @salida as N'@salida'
+        """
+
+        try:
+            self.connection.cursor.execute(sql, idAlbum)
+            list_tracks = []
+            rows = self.connection.cursor.fetchall()
+            for row in rows:
+                track = Track(row.IdTrack,row.Title,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
+                track.album.idAlbum = row.IdAlbum
+                track.album.title = row.AlbumTitle
+                track.album.cover = row.Cover
+                track.album.publication = row.Publication
+                track.album.recordCompany = row.RecordCompany
+                track.album.idAlbumType = row.IdAlbumType
+                track.album.artist.idArtist = row.IdArtist
+                track.album.artist.name = row.ArtistName 
+                track.album.artist.registerDate = row.RegisterDate
+                track.album.artist.description = row.Description
+                track.album.musicGender.idMusicGender = row.IdMusicGender
+                track.album.musicGender.genderName = row.GenderName
+                list_tracks.append(track)
+            return list_tracks   
+            list_tracks.append(track)
+                    
+            return list_tracks     
+        except Exception as ex:
+            return DataBaseException("Database connection error");
+        finally:
+            self.connection.close()
+        
+        

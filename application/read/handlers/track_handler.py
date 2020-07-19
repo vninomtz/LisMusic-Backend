@@ -1,10 +1,13 @@
 from tracks.tracks.application.use_cases.get_track import GetTrack
 from infraestructure.sqlserver_repository_track import SqlServerTrackRepository
+from infraestructure.sqlserver_repository_album import SqlServerAlbumRepository
 from tracks.tracks.domain.exceptions import DataBaseException,TrackInvalidException,TrackNotExistsException, InvalidParamsException
 from flask_restful import Resource
 from flask import jsonify
-from tracks.tracks.application.use_cases import search_tracks, get_tracks_radio_gender, get_tracks_history_account
-
+from tracks.tracks.application.use_cases import search_tracks, get_tracks_radio_gender, get_tracks_history_account, get_tracks_of_album
+from albums.albums.domain.exceptions import AlbumNotExistsException
+from albums.albums.application.use_cases import exists_album
+from application.writer.handlers.login_handler import authorization_token
 
 class TrackHandler(Resource):
     def get(self, idTrack):
@@ -27,6 +30,25 @@ class TrackHandler(Resource):
             response = jsonify({'error': error})
             response.status_code = 500
             return response
+
+class TracksOfAlbumHandler(Resource):
+    @authorization_token
+    def get(self, idAlbum):
+        try:
+            usecase_exist_album = exists_album.ExistsAlbum(SqlServerAlbumRepository())
+            dtoclass_album = exists_album.ExistsAlbumInputDto(idAlbum)
+            usecase_exist_album.execute(dtoclass_album)
+
+            usecase = get_tracks_of_album.GetTracksOfAlbum(SqlServerTrackRepository())
+            dtoclass = get_tracks_of_album.GetTracksOfAlbumInputDto(idAlbum)
+            list_tracks = usecase.execute(dtoclass)
+
+            return [track.to_json_for_search() for track in list_tracks], 200
+            
+        except AlbumNotExistsException as ex:
+            return {"error": str(ex)}, 400
+        except DataBaseException as ex:
+            return {"error": str(ex)}, 500
 
 class SearchTrackHandler(Resource):
     def get(self, queryCriterion):

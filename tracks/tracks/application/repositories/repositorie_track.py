@@ -19,6 +19,10 @@ class TrackRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def get_tracks_of_album(self, idAlbum: str):
+        pass
+
+    @abc.abstractmethod
     def get_tracks_of_playlist(self, idPlaylist:int):
         pass
 

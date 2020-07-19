@@ -24,10 +24,6 @@ class AlbumRepository(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get_tracks_of_album(self, idAlbum: str):
-        pass
-
-    @abc.abstractmethod
     def get_albums_like_of_account(self, idAccount: str):
         pass
 
