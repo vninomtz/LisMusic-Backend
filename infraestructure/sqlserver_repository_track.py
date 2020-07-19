@@ -151,12 +151,21 @@ class SqlServerTrackRepository(TrackRepository):
             listTracks = []
             if self.connection.cursor.rowcount != 0:
                 for row in rows:
-                    print(row)
+                  
                     track = Track(row.IdTrack,row.Title,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
                     track.album.idAlbum = row.IdAlbum
                     track.album.title = row.AlbumTitle
                     track.album.cover = row.Cover
+                    track.album.publication = row.Publication
+                    track.album.recordCompany = row.RecordCompany
+                    track.album.idAlbumType = row.IdAlbumType
+                    track.album.artist.idArtist = row.IdArtist
                     track.album.artist.name = row.ArtistName 
+                    track.album.artist.registerDate = row.RegisterDate
+                    track.album.artist.description = row.Description
+                    track.album.musicGender.idMusicGender = row.IdMusicGender
+                    track.album.musicGender.genderName = row.GenderName
+                    
                     listTracks.append(track)
                 return listTracks        
             return False
@@ -248,10 +257,12 @@ class SqlServerTrackRepository(TrackRepository):
             if self.connection.cursor.rowcount != 0:
                 for row in rows:
                     print(row)
-                    track = Track(row.IdTrack,row.Title,None,row.Reproductions,row.FileTrack,row.Avaible)
+                    track = Track(row.IdTrack,row.Title,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
                     track.album.title = row.AlbumTitle
                     track.album.cover = row.Cover
                     track.album.artist.name = row.ArtistName 
+                    track.musicGender.idMusicGender = row.IdMusicGender
+                    track.musicGender.genderName = row.GenderName
                     list_tracks.append(track)
                 return list_tracks      
 

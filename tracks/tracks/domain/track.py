@@ -1,5 +1,6 @@
 from albums.albums.domain.album import Album
 from tracks.tracks.domain.exceptions import TrackInvalidException
+from musicgenders.genders.domain.musicgender import MusicGender
 from uuid import uuid4
 
 INITIAL_REPRODUCTIONS = 0
@@ -13,6 +14,8 @@ class Track:
         self.fileTrack: str = fileTrack
         self.avaible: bool = avaible
         self.album: Album = Album()
+   
+        
 
     @classmethod
     def create(cls, title,duration, fileTrack):
@@ -44,7 +47,7 @@ class Track:
             "fileTrack": self.fileTrack,
             "avaible": self.avaible,
             "cover": 'http://10.0.2.2:6000/media/albums/{}'.format(self.album.cover),
-            "artist_name": self.album.artist.name,
+            "artistName": self.album.artist.name,
             "album_uri": 'http://10.0.2.2:6000/album/{}'.format(self.album.idAlbum),
             "artist_uri": 'http://10.0.2.2:6000/artist/{}'.format(self.album.artist.idArtist)
         }
@@ -59,9 +62,9 @@ class Track:
             "reproductions": self.reproductions,
             "fileTrack": self.fileTrack,
             "avaible": self.avaible,
-            "cover:": self.album.cover,
-            "albumTitle": self.album.title,
-            "artistName": self.album.artist.name
+            "artistName": self.album.artist.name,
+            "Album": self.album.to_json()
+            
         }
         return track_to_json;
 
