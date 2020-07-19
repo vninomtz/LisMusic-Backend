@@ -49,7 +49,8 @@ class Track:
             "cover": 'http://10.0.2.2:6000/media/albums/{}'.format(self.album.cover),
             "artistName": self.album.artist.name,
             "album_uri": 'http://10.0.2.2:6000/album/{}'.format(self.album.idAlbum),
-            "artist_uri": 'http://10.0.2.2:6000/artist/{}'.format(self.album.artist.idArtist)
+            "artist_uri": 'http://10.0.2.2:6000/artist/{}'.format(self.album.artist.idArtist),
+            "Album": self.album.to_json()
         }
         return track_to_json;
 
