@@ -18,23 +18,25 @@
  */
 
 enum Quality{
-    HIGH    =   0,
-    MIDDLE  =   1,
-    LOW     =   2,
+    HIGH = 0,
+    MIDDLE = 1,
+    LOW = 2,
 }
 
 struct TrackRequest{
-    1: string   fileName
-    2: Quality  quality
+    1: string fileName
+    2: Quality quality
 }
 
 struct TrackUploaded{
-    1: string   fileName
+    1: string fileName
 }
 
 struct TrackAudio{
-    1: string   trackName
-    2: binary   audio
+    1: string idTrack
+    2: string trackName
+    3: binary audio
+
 }
 
 service StreamingService {

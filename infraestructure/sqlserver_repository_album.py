@@ -144,10 +144,15 @@ class SqlServerAlbumRepository(AlbumRepository):
         rows = self.connection.cursor.fetchall()
         list_albums = []
         for row in rows:
-            album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication.strftime('%Y-%m-%d'), row.RecordCompany,
-                            None, row.IdAlbumType, row.ArtistName,row.GenderName)
+            album = Album(row.IdAlbum,row.Title,row.AlbumCover,row.Publication, row.RecordCompany,row.IdAlbumType)
             album.artist.idArtist = row.IdArtist
             album.artist.name = row.ArtistName
+            album.artist.registerDate = row.RegisterDate
+            album.artist.description = row.Description
+            album.artist.cover = row.ArtistCover
+            album.musicGender.idMusicGender = row.IdMusicGender
+            album.musicGender.genderName = row.GenderName
+
             list_albums.append(album)
 
         return list_albums
@@ -204,8 +209,14 @@ class SqlServerAlbumRepository(AlbumRepository):
         rows = self.connection.cursor.fetchall()
         list_albums = []
         for row in rows:
-            album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication.strftime('%Y-%m-%d'), row.RecordCompany,
-                            row.IdMusicGender, row.IdAlbumType, row.ArtistName, row.GenderName)
+            album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication, row.RecordCompany,row.IdAlbumType)
+            album.musicGender.idMusicGender = row.IdMusicGender
+            album.musicGender.genderName = row.GenderName
+            album.artist.name = row.ArtistName
+            album.artist.cover = row.ArtistCover
+            album.artist.description = row.Description
+            album.artist.registerDate = row.RegisterDate
+            album.artist.idArtist = row.IdArtist
             list_albums.append(album)
 
         return list_albums
@@ -229,9 +240,14 @@ class SqlServerAlbumRepository(AlbumRepository):
         if self.connection.cursor.rowcount != 0:
             list_albums = []
             for row in rows:
-                album = Album(row.IdAlbum,row.Title,row.Cover,row.Publication.strftime('%Y-%m-%d'), row.RecordCompany,
-                            None, row.IdAlbumType, None,row.GenderName)
+                album = Album(row.IdAlbum,row.Title,row.AlbumCover,row.Publication, row.RecordCompany,row.IdAlbumType)
+                album.musicGender.idMusicGender = row.IdMusicGender
+                album.musicGender.genderName = row.GenderName
                 album.artist.name = row.ArtistName
+                album.artist.cover = row.ArtistCover
+                album.artist.description = row.Description
+                album.artist.registerDate = row.RegisterDate
+                album.artist.idArtist = row.IdArtist
                 list_albums.append(album)
             return list_albums
             

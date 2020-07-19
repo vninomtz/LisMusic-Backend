@@ -27,7 +27,7 @@ File.open "../streaming/media/track1.mp3", "r" do |source_file|
     end
 
 begin
-        track_uploaded = client.UploadTrack(TrackAudio.new(trackName: 'test', audio: audio)) 
+        track_uploaded = client.UploadTrack(TrackAudio.new(idTrack: '1b70bf18-f1a6-449c-890c-78f7c19a5470',trackName: 'test', audio: audio)) 
         puts track_uploaded.fileName
 
 rescue => exception
