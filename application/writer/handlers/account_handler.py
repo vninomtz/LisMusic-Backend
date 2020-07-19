@@ -51,6 +51,8 @@ class AccountHandler(Resource):
             response = jsonify({'error': error})
             response.status_code = 500
             return response
+        except Exception:
+            return {"error":"Server connection error"}
 
     def put(self):
         print("Actualizando cuenta...")

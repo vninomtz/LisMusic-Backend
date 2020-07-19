@@ -6,7 +6,7 @@ from playlists.playlists.domain.exceptions import DataBaseException, PlaylistInv
 from flask.json import jsonify
 
 class PlaylistHandler(Resource):
-    def post(self, idPlaylist):
+    def post(self):
         usecase = create_playlist.CreatePlaylist(SqlServerPlaylistRepository())
         dtoclass = create_playlist.CreatePlaylistInputDto(
             request.json["title"],

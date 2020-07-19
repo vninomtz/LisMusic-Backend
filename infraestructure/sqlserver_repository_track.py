@@ -118,9 +118,17 @@ class SqlServerTrackRepository(TrackRepository):
             track = Track(row.IdTrack,row.TitleTrack,row.Duration,None,row.FileTrack,row.Avaible)
             track.album.idAlbum = row.IdAlbum
             track.album.title = row.TitleAlbum
-            track.album.cover = row.Cover
+            track.album.cover = row.CoverAlbum
+            track.album.publication = row.Publication
+            track.album.recordCompany = row.RecordCompany
+            track.album.idAlbumType = row.IdAlbumType
             track.album.artist.idArtist = row.IdArtist
-            track.album.artist.name = row.NameArtist
+            track.album.artist.name = row.Name
+            track.album.artist.cover = row.CoverArtist
+            track.album.artist.registerDate = row.RegisterDate
+            track.album.artist.description = row.Description
+            track.album.musicGender.idMusicGender = row.IdMusicGender
+            track.album.musicGender.genderName = row.GenderName
             listTracks.append(track)
 
         self.connection.close()
