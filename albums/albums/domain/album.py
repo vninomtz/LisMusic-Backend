@@ -49,6 +49,6 @@ class Album:
         "idAlbumType": self.idAlbumType,
         "idMusicGender": self.musicGender.idMusicGender,
         "idArtist": self.artist.idArtist,
-        "Track": [track.to_json() for track in self.tracks]
+        "tracks": [track.to_json() for track in self.tracks]
     }
         return album_to_json
