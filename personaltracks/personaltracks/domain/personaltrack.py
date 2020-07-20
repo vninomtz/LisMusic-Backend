@@ -13,7 +13,7 @@ class PersonalTrack:
 
     @classmethod
     def create(cls, title, gender, album, fileTrack):
-        new_personal_tracks = PersonalTrack(str(uuid4()), title, gender, album, None, fileTrack, False)   
+        new_personal_tracks = PersonalTrack(str(uuid4()), title, gender, album, 0, fileTrack, False)   
         return new_personal_tracks
 
     def to_json(self):
