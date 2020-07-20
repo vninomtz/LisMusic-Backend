@@ -7,7 +7,7 @@ require 'json'
 require "mp3info"
 
 AUTH_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50X2lkIjoiNjhkZmIyMjAtYTRiMC00MzU3LTg5MWEtMmJlOWQ1YWYxNWNkIiwiZXhwIjpudWxsfQ.0jcKlKShoddsT1-M4h7bMkJfpQAg7RdF21D8zJq7a7I"
-URL = "http://0.0.0.0:5000/track"
+BASE_URL = "http://0.0.0.0:5000"
 
 def get_length_track(filename)
     Mp3Info.open("../streaming/media/#{filename}.mp3") do |mp3info|
@@ -16,10 +16,11 @@ def get_length_track(filename)
 end
 
 def save_filename_track(id_track,filename)
-    begin     
+    begin
+        path = "/track"     
         RestClient::Request.execute(
             method: :put,
-            url: URL,
+            url: BASE_URL + path,
             payload: {"idTrack": id_track,
                     "title": nil,
                     "duration": get_length_track(filename),
@@ -27,6 +28,30 @@ def save_filename_track(id_track,filename)
                     "fileTrack": filename,
                     "available": 1,
                     "idAlbum": nil}.to_json,
+            headers: {"Content-Type" => "application/json",
+                    "Authorization" => AUTH_TOKEN }
+           )
+        return true
+    rescue => exception
+        print exception
+        return false 
+    end  
+end
+
+def update_personal_track(idPersonalTrack, filename)
+    begin
+        path = "/personalTrack"     
+        RestClient::Request.execute(
+            method: :put,
+            url: BASE_URL + path,
+            payload: {"idPersonalTrack": idPersonalTrack,
+                    "idAccount": nil,
+                    "title": nil,
+                    "gender": nil,
+                    "album": nil,
+                    "duration": get_length_track(filename),
+                    "fileTrack": filename,
+                    "available": 1}.to_json,
             headers: {"Content-Type" => "application/json",
                     "Authorization" => AUTH_TOKEN }
            )
@@ -60,29 +85,6 @@ class StreamingServiceHander
         return track_uploaded
     end
 
-    def update_personal_track(idtrack, filename)
-        begin     
-            RestClient::Request.execute(
-                method: :put,
-                url: URL,
-                payload: {"idTrack": id_track,
-                        "title": nil,
-                        "duration": get_length_track(filename),
-                        "reproductions": nil,
-                        "fileTrack": filename,
-                        "available": 1,
-                        "idAlbum": nil}.to_json,
-                headers: {"Content-Type" => "application/json",
-                        "Authorization" => AUTH_TOKEN }
-               )
-            return true
-        rescue => exception
-            print exception
-            return false 
-        end  
-    end
-
-
     def UploadPersonalTrack(trackAudio)
         filename = trackAudio.trackName() + SecureRandom.hex(5)
         File.open("../streaming/media/#{filename}.mp3", 'wb') do |destin_file|
@@ -92,6 +94,7 @@ class StreamingServiceHander
     end
 
 end
+
 
 handler = StreamingServiceHander.new()
 processor = StreamingService::Processor.new(handler)
