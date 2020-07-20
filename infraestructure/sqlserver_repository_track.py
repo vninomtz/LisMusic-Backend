@@ -199,15 +199,21 @@ class SqlServerTrackRepository(TrackRepository):
                     track.album.cover = row.AlbumCover
                     track.album.publication = row.Publication
                     track.album.recordCompany = row.RecordCompany
+                    track.album.idAlbumType = row.IdAlbumType
                     track.album.artist.idArtist = row.IdArtist
                     track.album.artist.name = row.ArtistName
                     track.album.artist.cover = row.ArtistCover
+                    track.album.artist.registerDate = row.RegisterDate
                     track.album.artist.description = row.Description
+                    track.album.musicGender.idMusicGender = row.IdMusicGender
+                    track.album.musicGender.genderName = row.GenderName
+
                     listTracks.append(track)
                 
 
             return listTracks
         except Exception as ex:
+            print(ex)
             raise DataBaseException("Database connection error")
         finally:
             self.connection.close()

@@ -76,19 +76,7 @@ class Track:
             "duration": self.duration,
             "fileTrack": self.fileTrack,
             "avaible": self.avaible,
-            "album": {
-                "idAlbum": self.album.idAlbum,
-                "title": self.album.title,
-                "cover": 'http://localhost:6000/media/albums/{}'.format(self.album.cover),
-                "publication": str(self.album.publication),
-                "recordCompany": self.album.recordCompany,
-                "artist":{
-                "idArtist": self.album.artist.idArtist,
-                "name": self.album.artist.name,
-                "cover": 'http://localhost:6000/media/artists/{}'.format(self.album.cover),
-                "description": self.album.artist.description
-                },
-            },
+            "Album": self.album.to_json()
             
         }
         return track_to_json;
