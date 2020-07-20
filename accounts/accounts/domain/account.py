@@ -50,8 +50,8 @@ class Account:
             "birthday": self.birthday,
             "cover": self.cover,
             "created": self.createdDate,
-            "updated:": self.updatedDate,
-            "contentCreator:": self.contentCreator,
+            "updated": self.updatedDate,
+            "contentCreator": self.contentCreator,
 
         }
         return account_to_json

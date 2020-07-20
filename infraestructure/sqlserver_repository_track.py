@@ -116,7 +116,7 @@ class SqlServerTrackRepository(TrackRepository):
         rows = self.connection.cursor.fetchall()
         listTracks = []
         for row in rows:
-            track = Track(row.IdTrack,row.TitleTrack,row.Duration,None,row.FileTrack,row.Avaible)
+            track = Track(row.IdTrack,row.TitleTrack,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
             track.album.idAlbum = row.IdAlbum
             track.album.title = row.TitleAlbum
             track.album.cover = row.CoverAlbum

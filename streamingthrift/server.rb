@@ -64,6 +64,7 @@ end
 
 class StreamingServiceHander
     def GetTrackAudio(trackRequest)
+        puts "Entrando al servicio"
         audio = ''
         File.open "../streaming/media/#{trackRequest.fileName}.mp3", "r" do |source_file|
             until source_file.eof?
@@ -91,7 +92,7 @@ class StreamingServiceHander
             destin_file.write trackAudio.audio
         end
         update_personal_track(trackAudio.idTrack, filename)
-        track_uploaded = TrackUploaded.new(fileName: fileName)
+        track_uploaded = TrackUploaded.new(fileName: filename)
         return track_uploaded
     end
 

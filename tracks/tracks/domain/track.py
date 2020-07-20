@@ -44,6 +44,7 @@ class Track:
             "idTrack": self.idTrack,
             "title": self.title,
             "duration": self.duration,
+            "reproductions": self.reproductions,
             "fileTrack": self.fileTrack,
             "avaible": self.avaible,
             "cover": 'http://10.0.2.2:6000/media/albums/{}'.format(self.album.cover),
