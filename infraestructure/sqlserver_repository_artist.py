@@ -160,6 +160,34 @@ class SqlServerArtistRepository(ArtistRepository):
             
             return False
 
+
+    def get_account_artist(self, idAccount:str):
+        try:
+            self.connection.open()
+            sql = """\
+                DECLARE	@return_value int,
+                        @estado int,
+                        @salida nvarchar(1000)
+
+                EXEC	@return_value = [dbo].[SPS_GetArtistOfAccount]
+                        @idAccount = ?,
+                        @estado = @estado OUTPUT,
+                        @salida = @salida OUTPUT
+                """
+            self.connection.cursor.execute(sql,idAccount)
+            row = self.connection.cursor.fetchone()
+            if self.connection.cursor.rowcount != 0:
+                artist = Artist(row.IdArtist,row.Name,row.Cover,row.RegisterDate, row.Description)
+                artist.account.idAccount = row.IdAccount
+                return artist
+            else:
+                return None
+        except Exception as ex:
+            raise DataBaseException("Database connection error ", ex) 
+        finally:
+            self.connection.close()
+
+
 		
           
 

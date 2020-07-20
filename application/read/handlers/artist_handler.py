@@ -1,4 +1,4 @@
-from artists.artists.application.use_cases import get_artists_like_of_account, search_artist
+from artists.artists.application.use_cases import get_artists_like_of_account, search_artist, get_artist_account
 from infraestructure.sqlserver_repository_account import SqlServerAccountRepository
 from infraestructure.sqlserver_repository_artist import SqlServerArtistRepository
 from accounts.accounts.domain.exceptions import AccountNotExistException, DataBaseException
@@ -33,6 +33,18 @@ class SearchArtistHandler(Resource):
             return {"error": str(ex)}, 400
         except ArtistNotExistsException as ex:
             return {"error": str(ex)}, 400
+        except Exception as ex:
+            return {"error": str(ex)}, 500
+
+class ArtistAccount(Resource):
+    def get(self, idAccount):
+        try:
+            usecase = get_artist_account.GetArtistsAccount(SqlServerArtistRepository())
+            artist = usecase.execute(idAccount)
+            if artist != None:
+                return artist.to_json();
+            else:
+                return {"error": "Artist not found"}, 404
         except Exception as ex:
             return {"error": str(ex)}, 500
             

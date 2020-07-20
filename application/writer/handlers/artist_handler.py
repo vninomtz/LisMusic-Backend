@@ -17,6 +17,7 @@ class ArtistHandler(Resource):
             request.json["name"],
             request.json["cover"],
             request.json["description"],
+            request.json["idAccount"],
         )     
         try:
             artist = usecase.execute(dtoclass)

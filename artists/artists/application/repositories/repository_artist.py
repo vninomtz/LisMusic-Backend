@@ -29,6 +29,10 @@ class ArtistRepository(abc.ABC):
     @abc.abstractmethod
     def search_artists(self, queryCriterion):
         pass
+
+    @abc.abstractmethod
+    def get_account_artist(self, idAccount:str):
+        pass
     
 
     

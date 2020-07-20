@@ -26,6 +26,7 @@ class Artist:
         "name": self.name,
         "cover": 'http://10.0.2.2:6000/media/artists/{}'.format(self.cover),
         "registerDate": self.registerDate.strftime('%Y-%m-%d') ,
-        "description": self.description
+        "description": self.description,
+        "idAccount": self.account.idAccount
     }
         return artist_to_json

@@ -23,8 +23,8 @@ class CreateArtist:
         
         new_artist = Artist.create(inputArtist.name, inputArtist.cover, inputArtist.description)
         new_artist.account.idAccount = inputArtist.idAccount
-        nameCover = self.generate_name(new_artist.name)
-        if Image.Image.save_image(new_artist.cover, nameCover, "Artist"):
+        nameCover = Image.generate_name(new_artist.name)
+        if Image.save_image(new_artist.cover, nameCover, "Artist"):
             new_artist.cover = nameCover
 
         try:
