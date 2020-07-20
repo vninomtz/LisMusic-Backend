@@ -10,8 +10,7 @@ class PersonalTrackHandler(Resource):
             request.json["idAccount"],
             request.json["title"],
             request.json["gender"],
-            request.json["album"],
-            request.json["fileTrack"],          
+            request.json["album"]         
         )
         try:
             personal_track = use_case.execute(dtoclass)

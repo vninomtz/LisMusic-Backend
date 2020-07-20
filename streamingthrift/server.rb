@@ -91,6 +91,8 @@ class StreamingServiceHander
             destin_file.write trackAudio.audio
         end
         update_personal_track(trackAudio.idTrack, filename)
+        track_uploaded = TrackUploaded.new(fileName: fileName)
+        return track_uploaded
     end
 
 end
