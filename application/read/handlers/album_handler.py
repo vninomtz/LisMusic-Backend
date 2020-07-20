@@ -1,5 +1,4 @@
-from albums.albums.application.use_cases import exists_album, get_albums_like_of_account, get_albums_of_artist, get_albums_of_artist, get_tracks_of_album, search_album
-from infraestructure.sqlserver_repository_album import SqlServerAlbumRepository
+from albums.albums.application.use_cases import exists_album, get_albums_like_of_account, get_albums_of_artist, get_albums_of_artist, search_album
 from flask import Flask, request
 from flask_restful import Resource
 from artists.artists.domain.exceptions import ArtistNotExistsException, DataBaseException
@@ -28,26 +27,6 @@ class AlbumsOfArtistHandler(Resource):
             return {"error": str(ex)}, 400  
         except DataBaseException as ex:
             return {"error": str(ex)}, 500
-
-class TracksOfAlbumHandler(Resource):
-    @authorization_token
-    def get(self, idAlbum):
-        try:
-            usecase_exist_album = exists_album.ExistsAlbum(SqlServerAlbumRepository())
-            dtoclass_album = exists_album.ExistsAlbumInputDto(idAlbum)
-            list_tracks = usecase_exist_album.execute(dtoclass_album)
-
-            usecase = get_tracks_of_album.GetTracksOfAlbum(SqlServerAlbumRepository())
-            dtoclass = get_tracks_of_album.GetTracksOfAlbumInputDto(idAlbum)
-            list_albums = usecase.execute(dtoclass)
-
-            return [album.to_json() for album in list_albums], 200
-            
-        except AlbumNotExistsException as ex:
-            return {"error": str(ex)}, 400
-        except DataBaseException as ex:
-            return {"error": str(ex)}, 500
-
 class AlbumsLikeOfAccountHandler(Resource):
     @authorization_token
     def get(self, idAccount):

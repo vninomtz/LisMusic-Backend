@@ -42,5 +42,6 @@ struct TrackAudio{
 service StreamingService {
     TrackAudio GetTrackAudio(1: TrackRequest trackRequest)
     TrackUploaded UploadTrack(1: TrackAudio trackAudio)
+    TrackUploaded UploadPersonalTrack(1: TrackAudio trackAudio)
 }
 

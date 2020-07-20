@@ -157,35 +157,6 @@ class SqlServerAlbumRepository(AlbumRepository):
 
         return list_albums
 
-    def get_tracks_of_album(self, idAlbum:str):
-            self.connection.open()
-            sql = """\
-            DECLARE	@return_value int,
-                    @estado int,
-                    @salida nvarchar(1000)
-
-            EXEC    @return_value = [dbo].[SPS_GetTracksOfAlbum]
-                    @idAlbum = ?,
-                    @estado = @estado OUTPUT,
-                    @salida = @salida OUTPUT
-
-            SELECT	@estado as N'@estado',
-                    @salida as N'@salida'
-            """
-
-            self.connection.cursor.execute(sql, idAlbum)
-
-            list_tracks = []
-            rows = self.connection.cursor.fetchall()
-            for row in rows:
-                print(row)
-                track = Track(row.IdTrack,row.Title,row.Duration,row.Reproductions,row.FileTrack,row.Avaible)
-                list_tracks.append(track)
-                
-            
-            return list_tracks     
-
-
     def get_albums_like_of_account(self, idAccount: str):
         sql = """\
         SET NOCOUNT ON;    

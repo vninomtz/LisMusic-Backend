@@ -63,7 +63,6 @@ class Track:
             "reproductions": self.reproductions,
             "fileTrack": self.fileTrack,
             "avaible": self.avaible,
-            "artistName": self.album.artist.name,
             "Album": self.album.to_json()
             
         }

@@ -11,8 +11,8 @@ from application.writer.handlers.playlist_tracks_handler import PlaylistTracksHa
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from application.writer.handlers.track_handler import TrackHandler, TrackPlayedHandler
-#from flask_jwt_extended import JWTManager, jwt_required
-#import jwt
+from application.writer.handlers.personal_track_handler import PersonalTrackHandler
+
 
 app = Flask(__name__)
 #app.config['SECRET_KEY'] = 'thebiggestsecretkey'
@@ -24,7 +24,7 @@ api.add_resource(ArtistHandler, '/artist')
 api.add_resource(AlbumHandler, '/album')
 api.add_resource(TrackHandler, '/track')
 api.add_resource(TrackPlayedHandler, '/trackPlay')
-
+api.add_resource(PersonalTrackHandler,'/personalTrack')
 api.add_resource(LoginHandler, '/login')
 api.add_resource(PlaylistHandler, '/playlist', '/playlist/<int:idPlaylist>')
 api.add_resource(PlaylistTracksHandler, '/playlist/<int:idPlaylist>/track/<string:idTrack>')

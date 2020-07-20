@@ -41,6 +41,21 @@ module StreamingService
       raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'UploadTrack failed: unknown result')
     end
 
+    def UploadPersonalTrack(trackAudio)
+      send_UploadPersonalTrack(trackAudio)
+      return recv_UploadPersonalTrack()
+    end
+
+    def send_UploadPersonalTrack(trackAudio)
+      send_message('UploadPersonalTrack', UploadPersonalTrack_args, :trackAudio => trackAudio)
+    end
+
+    def recv_UploadPersonalTrack()
+      result = receive_message(UploadPersonalTrack_result)
+      return result.success unless result.success.nil?
+      raise ::Thrift::ApplicationException.new(::Thrift::ApplicationException::MISSING_RESULT, 'UploadPersonalTrack failed: unknown result')
+    end
+
   end
 
   class Processor
@@ -58,6 +73,13 @@ module StreamingService
       result = UploadTrack_result.new()
       result.success = @handler.UploadTrack(args.trackAudio)
       write_result(result, oprot, 'UploadTrack', seqid)
+    end
+
+    def process_UploadPersonalTrack(seqid, iprot, oprot)
+      args = read_args(iprot, UploadPersonalTrack_args)
+      result = UploadPersonalTrack_result.new()
+      result.success = @handler.UploadPersonalTrack(args.trackAudio)
+      write_result(result, oprot, 'UploadPersonalTrack', seqid)
     end
 
   end
@@ -113,6 +135,38 @@ module StreamingService
   end
 
   class UploadTrack_result
+    include ::Thrift::Struct, ::Thrift::Struct_Union
+    SUCCESS = 0
+
+    FIELDS = {
+      SUCCESS => {:type => ::Thrift::Types::STRUCT, :name => 'success', :class => ::TrackUploaded}
+    }
+
+    def struct_fields; FIELDS; end
+
+    def validate
+    end
+
+    ::Thrift::Struct.generate_accessors self
+  end
+
+  class UploadPersonalTrack_args
+    include ::Thrift::Struct, ::Thrift::Struct_Union
+    TRACKAUDIO = 1
+
+    FIELDS = {
+      TRACKAUDIO => {:type => ::Thrift::Types::STRUCT, :name => 'trackAudio', :class => ::TrackAudio}
+    }
+
+    def struct_fields; FIELDS; end
+
+    def validate
+    end
+
+    ::Thrift::Struct.generate_accessors self
+  end
+
+  class UploadPersonalTrack_result
     include ::Thrift::Struct, ::Thrift::Struct_Union
     SUCCESS = 0
 
