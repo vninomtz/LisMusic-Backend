@@ -32,7 +32,7 @@ class AlbumHandler(Resource):
             usecase_exists_artist.execute(idartist)
 
             album = usecase.execute(dtoclass)
-            return album.to_json(), 201
+            return album.to_json_tracks(), 201
 
         except DataBaseException as ex: 
             return {"error": str(ex)}, 500

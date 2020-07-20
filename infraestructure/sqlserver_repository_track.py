@@ -27,6 +27,7 @@ class SqlServerTrackRepository(TrackRepository):
         """
         params = (track.idTrack, track.title, track.duration, track.reproductions, track.fileTrack, track.avaible,
                     track.album.idAlbum)
+        print(params)
         self.connection.cursor.execute(sql,params)
         try:
             self.connection.save()
@@ -109,7 +110,7 @@ class SqlServerTrackRepository(TrackRepository):
             DECLARE	@return_value int
 
             EXEC	@return_value = [dbo].[SPS_GetTracksOfPlaylist]
-                    @idTrack = ?
+                    @idPlaylist = ?
         """
         self.connection.cursor.execute(sql, idPlaylist)
         rows = self.connection.cursor.fetchall()

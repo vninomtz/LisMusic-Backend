@@ -27,7 +27,7 @@ class CreateAlbum:
 
 
     def execute(self, inputAlbum: CreateAlbumInputDto):
-        print(inputAlbum.idMusicGender)
+        print(inputAlbum.publication)
 
         if not inputAlbum.title or not inputAlbum.recordCompany or not inputAlbum.idAlbumType or not inputAlbum.idAlbumType or not inputAlbum.idArtist:
             raise AlbumInvalidException("Empty fields")
@@ -42,25 +42,28 @@ class CreateAlbum:
             raise AlbumTracksInvalidException("Album tracks not found")
 
         if inputAlbum.cover:
-            nameCover = self.generate_name(inputAlbum.title)
-            if Image.Image.save_image(inputAlbum.cover, nameCover, "Album"):
+            nameCover = Image.generate_name(inputAlbum.title)
+            if Image.save_image(inputAlbum.cover, nameCover, "Album"):
                 inputAlbum.cover = nameCover
         else:
             inputAlbum.cover = "defaultAlbumCover.jpeg"
 
         new_album = Album.create(inputAlbum.title, inputAlbum.cover, inputAlbum.publication,
-        inputAlbum.recordCompany,inputAlbum.idMusicGender, inputAlbum.idAlbumType,inputAlbum.idArtist)
+        inputAlbum.recordCompany, inputAlbum.idAlbumType)
+        new_album.artist.idArtist = inputAlbum.idArtist
+        new_album.musicGender.idMusicGender = inputAlbum.idMusicGender
 
+        list_tracks = []
         use_case_create_track = create_track.CreateTrack(SqlServerTrackRepository())
         for track in inputAlbum.tracks:
             dtoclass = create_track.CreateTrackInputDto(
                 track["title"],
-                track["duration"],
-                track["fileTrack"],
                 album = new_album
             )
-            use_case_create_track.execute(dtoclass)
-
+            print("Guardando track")
+            track = use_case_create_track.execute(dtoclass)
+            list_tracks.append(track)
+        new_album.tracks = list_tracks
         try:
             self.album_repository.save(new_album)
             return new_album
