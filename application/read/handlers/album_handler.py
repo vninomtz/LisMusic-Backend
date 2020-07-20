@@ -3,6 +3,7 @@ from flask import Flask, request
 from flask_restful import Resource
 from artists.artists.domain.exceptions import ArtistNotExistsException, DataBaseException
 from infraestructure.sqlserver_repository_artist import SqlServerArtistRepository
+from infraestructure.sqlserver_repository_album import SqlServerAlbumRepository
 from artists.artists.application.use_cases import exists_artist
 from albums.albums.domain.exceptions import AlbumInvalidException, AlbumNotExistsException
 from accounts.accounts.domain.exceptions import AccountNotExistException

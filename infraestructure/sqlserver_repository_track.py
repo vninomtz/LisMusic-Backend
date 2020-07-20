@@ -227,7 +227,6 @@ class SqlServerTrackRepository(TrackRepository):
                     @salida nvarchar(1000)
 
             EXEC	@return_value = [dbo].[SPI_AddTrackToHistory]
-                    @reproductionDate = ?,
                     @idAccount = ?,
                     @idTrack = ?,                    
                     @estado = @estado OUTPUT,
@@ -238,7 +237,7 @@ class SqlServerTrackRepository(TrackRepository):
             """
 
         try:
-            params = (reproductionDate,idAccount,idTrack)
+            params = (idAccount,idTrack)
             print(params)
             self.connection.cursor.execute(sql, params)
             self.connection.save()

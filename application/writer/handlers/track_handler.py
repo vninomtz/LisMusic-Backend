@@ -34,10 +34,10 @@ class TrackHandler(Resource):
 
 
 class TrackPlayedHandler(Resource):
-    def post(self): 
+    def post(self, idAccount, idTrack): 
         print("Adding play to track")
-        idtrack = request.json["idTrack"]
-        idAccount = request.json["idAccount"]
+        idtrack = idTrack
+        idAccount = idAccount
 
         use_case = add_track_played.AddTrackPlayed(SqlServerTrackRepository())
         try:
