@@ -35,8 +35,9 @@ class SqlServerAlbumRepository(AlbumRepository):
         """
        
         params = (album.idAlbum,album.title,album.cover,album.publication,album.recordCompany,
-                album.idMusicGender,album.idAlbumType,album.artist.idArtist)
+                album.musicGender.idMusicGender,album.idAlbumType,album.artist.idArtist)
         self.connection.cursor.execute(sql,params)
+        print("Album creado")
 
         try:
             self.connection.save()
@@ -44,6 +45,7 @@ class SqlServerAlbumRepository(AlbumRepository):
             self.connection.close()
             return True
         except DataBaseException as ex:
+            print(str(ex))
             raise DataBaseException("Database error")
 
     def exists_album_gender(self, idAlbumGender:str):

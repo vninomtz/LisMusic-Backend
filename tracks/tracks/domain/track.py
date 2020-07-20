@@ -18,11 +18,11 @@ class Track:
         
 
     @classmethod
-    def create(cls, title,duration, fileTrack):
+    def create(cls, title):
         if not title:
             raise TrackInvalidException("Missing fields")
 
-        newTrack = Track(str(uuid4()),title,duration,INITIAL_REPRODUCTIONS,fileTrack,False)
+        newTrack = Track(str(uuid4()),title,0,INITIAL_REPRODUCTIONS,'Unassigned',False)
         return newTrack
 
     def addTrack_to_album(self, album:Album):

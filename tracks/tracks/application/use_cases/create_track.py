@@ -6,8 +6,6 @@ from dataclasses import dataclass
 @dataclass
 class CreateTrackInputDto:
     title:str = None
-    duration:float = None
-    fileTrack:str = None
     album: Album = None
 class CreateTrack:
     def __init__(self, repository: TrackRepository):
@@ -15,7 +13,7 @@ class CreateTrack:
 
     def execute(self, inputTrack:CreateTrackInputDto):
         try:
-            newTrack = Track.create(inputTrack.title,inputTrack.duration,inputTrack.fileTrack)
+            newTrack = Track.create(inputTrack.title)
             newTrack.addTrack_to_album(inputTrack.album)
         except TrackInvalidException as ex:
             raise TrackInvalidException(ex)

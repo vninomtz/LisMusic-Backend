@@ -27,6 +27,7 @@ class SqlServerTrackRepository(TrackRepository):
         """
         params = (track.idTrack, track.title, track.duration, track.reproductions, track.fileTrack, track.avaible,
                     track.album.idAlbum)
+        print(params)
         self.connection.cursor.execute(sql,params)
         try:
             self.connection.save()
